@@ -1,0 +1,190 @@
+﻿body {
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 0px;
+	background-color: #fff;
+	}
+#titleTable {
+	border: 0px;
+	border-color: #c0c0c0;
+	border-style: solid;
+	width: 100%;
+	height: 100px;
+	text-align: center;
+	color: #fff;
+	background-image: url(title.jpg);
+	}
+#mainTable {
+	width: 100%;
+	height: 500px;
+	border: 0px;
+	}
+#mainTD1 {
+	border-top: 0px solid;
+	border-bottom:  1px solid;
+	border-left:  0px solid;
+	border-right:  0px solid;
+	border-color: #000;
+	border-style: solid;
+	width: 200px;
+	padding-top: 6px;
+	}
+#mainTD2 {
+	border-top: 0px solid;
+	border-bottom:  1px solid;
+	border-left:  0px solid;
+	border-right:  0px solid;
+	border-color: #000;
+	border-style: solid;
+	padding-bottom: 6px;
+	}
+#mainTD3 {
+	border-top: 0px solid;
+	border-bottom:  1px solid;
+	border-left:  0px solid;
+	border-right:  0px solid;
+	border-color: #000;
+	border-style: solid;
+	width: 200px;
+	}
+#w2Table {
+	width: 100%;
+	}
+#w3Table {
+	border: 0px;
+	width: 100%;
+	}
+#winTableMenu {
+	border: 0px;
+	border-color: #c0c0c0;
+	border-style: solid;
+	width: 95%;
+	margin: 5px;
+	background-color: #fff;
+	}
+#winTableHello1 {
+	border: 0px;
+	border-color: #c0c0c0;
+	border-style: solid;
+	margin: 10px;
+	}
+#winTableHello2 {
+	border: 0px;
+	border-color: #c0c0c0;
+	border-style: solid;
+	margin: 20px;
+	}
+#winTdCenterMain {
+	font-size: 14px;
+	text-align: left;
+	background-color: #F6F6F6;
+	}
+#winTdCenterMainText {
+	width: 100%;
+	height: 240px;
+	font-size: 14px;
+	text-align: left;
+	overflow: auto;
+	line-height: 16px;
+	}
+#winTableInfo {
+	border: 0px;
+	border-color: #c0c0c0;
+	border-style: solid;
+
+	}
+#win3Table {
+	border: 0px;
+	border-color: #c0c0c0;
+	border-style: solid;
+	width: 100%;
+	height: 10px;
+	font-size: 4px; 
+
+	}
+#winTdUpLeft {
+	width: 10px;
+	height: 18px;
+	font-size: 1px; 
+	background-image: url(winTdUpLeft.gif);
+	}
+#winTdTitleLeft {
+	width: 10px;
+	height: 18px;
+	font-size: 1px; 
+	background-image: url(winTdTitleLeft.gif);
+	}
+#winTdTitleCenter {
+	width: 10px;
+	height: 18px;
+	font-size: 14px;
+	font-weight: bold;
+	background-image: url(winTdTitleCenter.gif);
+	}
+#winTdTitleRight {
+	width: 10px;
+	height: 18px;
+	font-size: 1px;
+	background-image: url(winTdTitleRight.gif);
+	}
+#winTdUpCenter {
+	height: 18px;
+	font-size: 1px; 
+	background-image: url(winTdUpCenter.gif);
+	}
+#winTdUpRight {
+	width: 10px;
+	height: 18px;
+	font-size: 1px; 
+	background-image: url(winTdUpRight.gif);
+	}
+#winTdCenterLeft {
+	width: 10px;
+	font-size: 1px; 
+	background-image: url(winTdCenterLeft.gif);
+	}
+#winTdCenter {
+	font-size: 12px;
+	line-height: 22px;
+	text-align: left;
+	background-color: #F6F6F6;
+	}
+#winTdCenterMain {
+	font-size: 14px;
+	text-align: left;
+	background-color: #F6F6F6;
+	}
+#winTdCenterWin3 {
+	font-size: 12px;
+	line-height: 14px;
+	text-align: left;
+	background-color: #F6F6F6;	}
+#winTdCenterRight {
+	width: 10px;
+	font-size: 1px; 
+	background-image: url(winTdCenterRight.gif);
+	}
+#winTdBottomLeft {
+	width: 10px;
+	height: 14px;
+	font-size: 1px; 
+	background-image: url(winTdBottomLeft.gif);
+	}
+#winTdBottomCenter {
+	height: 14px;
+	font-size: 1px; 
+	background-image: url(winTdBottomCenter.gif);
+	}
+#winTdBottomRight {
+	width: 10px;
+	height: 14px;
+	font-size: 1px; 
+	background-image: url(winTdBottomRight.gif);
+	}
+#winTdBottomRightMore {
+	width: 50px;
+	height: 14px;
+	font-size: 11px; 
+	background-image: url(winTdBottomRightMore.gif);
+	text-align: center;
+	}
