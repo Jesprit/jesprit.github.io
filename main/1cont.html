@@ -1,0 +1,78 @@
+﻿<HTML>
+<HEAD>
+<TITLE>Меню</TITLE>
+<LINK href="style.css" type="text/css" rel="stylesheet">
+<script language="JavaScript">
+if (top == self) self.location.href = "cont.html";
+</script>
+<script>
+var MaxLength = 150;
+function DisplayLength(){
+  if ( Send_Message.message.value.length > MaxLength )
+    Send_Message.message.value = Send_Message.message.value.substr( 0, MaxLength );
+  Send_Message.remainchars.value = MaxLength - Send_Message.message.value.length;
+}
+function CheckLength(){
+  event.returnValue = Send_Message.message.value.length < MaxLength || document.selection.type != "None";
+}
+</script>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<SCRIPT LANGUAGE="JavaScript">
+function checkIt() {
+
+if (document.frmPager.from.value != "") {} 
+else {
+alert("Напиши своё имя");
+document.frmPager.from.focus(); 
+return false;
+}
+
+if (document.frmPager.body.value != "") {return true;} 
+else {
+alert("Напиши текст сообщения!!!");
+document.frmPager.body.focus(); 
+return false;
+}
+}
+</SCRIPT>
+
+</HEAD>
+<BODY bgcolor="DCDCDC">
+<TABLE BORDER="0" BGCOLOR="#0000FF" WIDTH="100%" CELLSPACING="1" CELLPADDING="0">
+<tr><TD BGCOLOR="1E90FF"><center><font COLOR="#DCDCDC" size="7">
+<DIV STYLE="filter:Glow(Strength='2', Color='ffffff'); width: 400; height: 60; font-size: 35pt; font-weight: bold; color: #51a8ff;"> Контакты </DIV> 
+</TD></TR>
+<TR><TD BGCOLOR="E0FFFF" id=idcomic>
+<TABLE BGCOLOR="#99ccff" WIDTH="100%" BORDER="0" ALIGN="CENTER" CELLSPACING="0" CELLPADDING="0" >
+<TR ALIGN=CENTER >
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="index.html" TARGET="_parent"><font size="2">Главная</font></A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="myself.html" TARGET="_parent"><font size="2">О себе</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="photo.html" TARGET="_parent"><font size="2">Photo</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="works.html" TARGET="_parent"><font size="2">Статейки</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="prog.html" TARGET="_parent"><font size="2">Программы</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="link.html" TARGET="_parent"><font size="2">Links</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="crack.html" TARGET="_parent"><font size="2">Кряки</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="wallpaper.html" TARGET="_parent"><font size="2">Wallpappers</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="guest.html" TARGET="_parent"><font size="2">Гостевая</A></TD>
+<td id=idbord3 WIDTH="10%" BGCOLOR="#E0FFFF"><A HREF="cont.html" TARGET="_parent"><font color="FF0000">Контакты</A>
+</TD></TR></TABLE>
+<p>
+<center>
+Связаться со мной очень легко.<BR>
+
+<a href="mailto:Jesprit@mail.ru"><font COLOR="000000">Jesprit@mail.ru</font></a><BR>
+
+</font></TD></TR></TABLE>
+<TABLE WIDTH="100%" BORDER="0">
+<TR><TD ALIGN="RIGHT"><font size="1">Последнее обновление:
+<SCRIPT language=JavaScript>
+document.write(document.lastModified);
+</SCRIPT></TD></TR></TABLE></FONT>
+<CENTER><FONT face="Times New Roman" size="1">Created by <a href="mailto:Jesprit@mail.ru">J<font color="FF0000">e</font>sprit</a>, 2003-2004, Omsk 
+</FONT></CENTER>
+<SCRIPT language=JavaScript>
+window.defaultStatus =
+"MySite. Copyright MySite Ltd."
+</SCRIPT>
+</body>
+</html>

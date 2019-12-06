@@ -1,0 +1,94 @@
+﻿<HTML>
+<HEAD>
+<TITLE>Меню</TITLE>
+<LINK href="style.css" type="text/css" rel="stylesheet">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+</HEAD>
+<BODY bgcolor="DCDCDC" link="0000FF" alink="0000FF" vlink="0000FF">
+<TABLE BORDER="0" WIDTH="100%" BGCOLOR="#0000FF" CELLSPACING="0" CELLPADDING="0"><TR><TD>
+<TABLE BORDER="0" WIDTH="100%" CELLSPACING="1" CELLPADDING="0">
+<TD BGCOLOR="1E90FF">
+<center> 
+<font COLOR="#DCDCDC" size="7">
+<DIV STYLE="filter:Shadow(Color='000000', Direction='45'); width: 400; height: 60; font-size: 35pt; font-weight: bold; text-align: center; color: #C0C0C0;">Статьи</DIV> 
+
+</font>
+
+</center>
+</TD></TR><TR><TD BGCOLOR="E0FFFF"  id=idcomic>
+<TABLE BGCOLOR="#99ccff" WIDTH="100%" BORDER="0" ALIGN="CENTER" CELLSPACING="0" CELLPADDING="0" >
+<TR ALIGN=CENTER >
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="index.html" TARGET="_TOP"><font size="2">Главная</font></A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="myself.html" TARGET="_TOP"><font size="2">О себе</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="photo.html" TARGET="_TOP"><font size="2">Photo</A></TD>
+<td id=idbord3 WIDTH="10%" align=center BGCOLOR="#E0FFFF"><A HREF="works.html" TARGET="_TOP"><font color="FF0000">Статейки</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="prog.html" TARGET="_TOP"><font size="2">Программы</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="link.html" TARGET="_TOP"><font size="2">Links</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="crack.html" TARGET="_TOP"><font size="2">Кряки</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="wallpaper.html" TARGET="_TOP"><font size="2">Wallpappers</B></A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="guest.html" TARGET="_TOP"><font size="2">Гостевая</A></TD>
+<td id=idbord4 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="cont.html" TARGET="_TOP"><font size="2">Контакты</A>
+</TD></TR></TABLE>
+<DIV align=RIGHT><A HREF="works.html" TARGET="_TOP">Назад</A></DIV>
+<center>
+<font face="Times New Roman"><font size="5" color="#808080">
+
+Крадём пароли соседа
+</font>
+<TABLE WIDTH="100%" BORDER="0"  CELLSPACING="2" CELLPADDING="2"><TR><TD id=idbord2>
+<CENTER>
+
+
+
+Вообще, есть очень много способов узнать чужие логин и пароль от интернета, вот наиболее простые из них. 
+Если у вас есть доступ к компьютеру чайника, то задача облегчается-остается лишь достать из реестра его пароль. 
+Ну например, вы приходите к такому ламеру в гости, лазая у него в компе сделайте умное лицо и скажите, 
+что у мено Fatal Error, и что исправить ее можете только вы, но для этого он должен разрешить вам поработать с его реестром, 
+а остальное уже дело техники. Заходите в "Пуск" , затем жмете команду "выполнить" и вводите там слово REGEDIT. 
+Затем идете по адресу: HKEY_USER>.DEAFULT>SOFTWARE>Microsoft>Internet Account Manager>Accounts. 
+Затем заходите в самый первый файл (хотя в разных компах по-разному) и в нем кликаете на файл Pop3password2. 
+Вот он и пароль. Так просто этот пароль вам не прочесть, он зашифрован, причем конкретно. В этот самый момент, 
+когда вы добрались до нужного файла-попросите друга налить вам чаю или принести попить. 
+Как только ламер вышел из комнаты, доставайте из кармана припрятанную вами дискету и копируйте его, 
+но лучше скопируйте все что есть. По возвращению домой, вашей задачей становиться расшиврование этих нелепых 
+( с вашей точки зрения ) цифер. Порядок таков: Имеется счетчик (назовем его N) от нуля до <сколько надо>. 
+Имеются три таблицы. В соответствии со счетчиком N берется байт из первой таблицы (X). 
+По смещению X+N, урезанному до 8 бит, из второй таблицы берется другой байт (Y). 
+Затем по адресу X+Y, опять же урезанному до 8 бит, из третьей таблицы берется третий байт (Z). 
+После столь хитрых манипуляций командой XOR с байтом Z шифруется байт информации, после чего счетчик инкрементируется, 
+и все повторяется сначала. Короче тут такая замарочка, что вам, т.е ламерам не врубить! Есть способ более проще. 
+Но для этого вам опять нужен чужой комп и опять повторяете точно такую же историюю но теперь крадете уже совершенно другие 
+файлы: файлы с расширением PWL и файл USER.DAT Копируйте их себе на дискеты и притесь на хату. Потом делаете такую фишку: 
+дома надо <создать> User'a с именем из PWL ( если ник вашего друга Artur, то создайте юзера с именем Artur) , 
+заменить свой USER.DAT на цельнотянутый и еще добавить в Windows тянутый PWL. После чего войти в Windows под 
+соответствующим именем. Вот как оказывается все просто!! Lamers must die!! 
+Ну а если ваш чайник вводит кажлый раз пароли вручную, то и для этого есть пара фишек. 
+Есть специальные проги-клавиатурные шпионы, так вот шлите такую кенту и вы узнаете все что он делает у себя на компе, 
+вплоть до пароля к инету и паролей к другим сервисам.
+
+
+
+</TD></TR></TABLE>
+
+<DIV align=RIGHT><A HREF="works.html" TARGET="_TOP">Назад</A></DIV>
+
+
+</font></TD></TR></TABLE></TD></TR></TABLE></TD></TR></TABLE>
+<TABLE WIDTH="100%" BORDER="0"><TR><TD   ALIGN="RIGHT"> 
+<font size="1">Последнее обновление:
+<SCRIPT language=JavaScript>
+<!--
+
+ document.write(document.lastModified);
+
+// -->
+</SCRIPT></TD></TR></TABLE></FONT>
+<CENTER><FONT face="Times New Roman" size="1">Created by <a href="mailto:Jesprit@mail.ru">J<font color="FF0000">e</font>sprit</a>, 2003, Omsk 
+</FONT></CENTER>
+<SCRIPT language=JavaScript>
+<!--
+	window.defaultStatus =
+	"MySite. Copyright MySite Ltd."
+// -->
+</SCRIPT>
+</html>

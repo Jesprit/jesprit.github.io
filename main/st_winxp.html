@@ -1,0 +1,113 @@
+﻿<HTML>
+<HEAD>
+<TITLE>Меню</TITLE>
+<LINK href="style.css" type="text/css" rel="stylesheet">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+</HEAD>
+<BODY bgcolor="DCDCDC" link="0000FF" alink="0000FF" vlink="0000FF">
+<TABLE BORDER="0" WIDTH="100%" BGCOLOR="#0000FF" CELLSPACING="0" CELLPADDING="0"><TR><TD>
+<TABLE BORDER="0" WIDTH="100%" CELLSPACING="1" CELLPADDING="0">
+<TD BGCOLOR="1E90FF">
+<center> 
+<font COLOR="#DCDCDC" size="7">
+<DIV STYLE="filter:Shadow(Color='000000', Direction='45'); width: 400; height: 60; font-size: 35pt; font-weight: bold; text-align: center; color: #C0C0C0;">Статьи</DIV> 
+</font>
+</center>
+</TD></TR><TR><TD BGCOLOR="E0FFFF"  id=idcomic>
+<TABLE BGCOLOR="#99ccff" WIDTH="100%" BORDER="0" ALIGN="CENTER" CELLSPACING="0" CELLPADDING="0" >
+<TR ALIGN=CENTER >
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="index.html" TARGET="_TOP"><font size="2">Главная</font></A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="myself.html" TARGET="_TOP"><font size="2">О себе</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="photo.html" TARGET="_TOP"><font size="2">Photo</A></TD>
+<td id=idbord3 WIDTH="10%" align=center BGCOLOR="#E0FFFF"><A HREF="works.html" TARGET="_TOP"><font color="FF0000">Статейки</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="prog.html" TARGET="_TOP"><font size="2">Программы</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="link.html" TARGET="_TOP"><font size="2">Links</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="crack.html" TARGET="_TOP"><font size="2">Кряки</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="wallpaper.html" TARGET="_TOP"><font size="2">Wallpappers</B></A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="guest.html" TARGET="_TOP"><font size="2">Гостевая</A></TD>
+<td id=idbord4 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="cont.html" TARGET="_TOP"><font size="2">Контакты</A>
+</TD></TR></TABLE>
+<DIV align=RIGHT><A HREF="works.html" TARGET="_TOP">Назад</A></DIV>
+<center>
+
+<font face="Times New Roman"><font size="5" color="#808080">
+   Вот что я обычно делаю после переустановки винды     </font>
+<TABLE WIDTH="100%" BORDER="0"  CELLSPACING="2" CELLPADDING="2"><TR><TD id=idbord2>
+<CENTER>
+Намного удобнее, если вместо выпрыгивания программа просто помигает своим ярлыком в панели задач. Для этого отредактируйте в реестре ключ
+HKUC \ Control Panel \ Desktop \ ForegroundLockTimeout
+Его (DWORD) значение говорит через какое количество миллисекунд после начала "мигания" программа может "выпрыгнуть" и перехватить фокус. Если значение установить в 0, то перехват фокуса будет запрещен.
+<P>
+
+HKUC \ Control Panel \ Desktop \ ForegroundFlashCount
+Он указывает сколько раз программа должна мигнуть (после этого она мигать перестанет). Если установить значение 0, то будет мигать, пока вы по ней не кликните.
+<P>
+
+Как автоматизировать вход в систему - без ввода логина и пароля?
+Start -> Run, вводим команду
+control userpasswords2
+После открытия апплета, служащего для управления учетными записями пользователей, снимаем на вкладке Users флажок напротив "Users Must Enter A User Name And Password To Use This Computer". После нажатия на кнопку ОК появится диалоговое окно "Automatically Log On", где нужно будет указать имя пользователя и пароль.
+<P>
+
+Можно ли уменьшить размер Windows XP?
+В том случае, если уже установлено все оборудование, можно удалить папку %SystemRoot%\Driver Cache\i386\ (т.е. по умолчанию C:\Windows\Driver Cache\i386\). Правда, в этом случае при добавлении любого нового оборудования Windows будет запрашивать установочный CD.
+Можно также отключить System Restore, удалив тем самым информацию, которая хранится в папке System Volume Informatiоn.
+И еще одну папку можно удалить - %SystemRoot%\system32\dllcache\ (в ней хранятся защищенные системные файлы, используемые для автоматического восстановления оригиналов в случае их повреждения). Кстати, по умолчанию размер этой папки - 400 мб (он задается в реестре параметром SFCQuota (0xFFFFFFFF), находящемся в ключе HKEY_LOCAL_MACHINE \ SOFTWARE \ Microsoft \ Windows NT \ CurrentVersion \ Winlogon), но его можно изменить до нуля командой sfc: sfc /cachesize=0 (если поставить, например, 10, то размер папки уменьшится до 10 мб)
+<P>
+Как сделать, чтобы зависшие и переставшие отвечать задачи убивались автоматически?
+В реестре по адресу HKCU\Control Panel\Desktop находится ключ HungAppTimeout, значение которого определяет интервал (в миллисекундах), через которое не отвечающее приложение считается зависшим. Кроме этого ключа, в той же ветви находятся ключи WaitToKillServiceTimeout (задаёт время ожидания перед "убийством" зависшей службы), и AutoEndTasks (при установке его значения в 1 системе дается разрешение убивать зависшие процессы самостоятельно).
+<P>
+Откуда загружаются программы при старте системы? У меня папка Автозагрузка пустая...
+При загрузке операционной системы каманды на запуск некоторых программ даются из системного реестра, где имеется специальная ветвь HLKM \SOFTWARE \MICROSOFT \WINDOWS \CURRENTVERSION \RUN (и аналогичная ...\RUNONCE). В этих ветвях записаны значения, каждое из которых соответствует одной запускаемой при старте программе...
+Только не стоит спешить - если не уверены, что за программа записана, перед удалением обязательно сохраните выбранные строчки (через пункт редактора реестра "экспорт").
+На закуску - маленький секрет. В Windows XP есть утилитка под названием msconfig, которая позволяет очень комфортно управлять параметрами загрузки. Запустить эта утилиту можно через кнопку Start (Пуск) - Run... (Выполнить).
+<P>
+Как отключить автозапуск компакт-дисков?
+Настройка реакции системы на вставленный в привод компакт-диск производится через CD Properties, вызываемые щелчком правой кнопки мышки по CD-диску. Правда, в этом случае нельзя определить действие системы при установке data-CD (уж не знаю почему, но пункта data-CD в CD Properties нет), поэтому, если требуется отключить автозапуск таких дисках, следует во время загрузки диска нажать и удерживать левый Shift.
+Другой способ состоит в правке реестра: находим ключ HKEY_LOCAL_MACHINE \SYSTEM \CurrentControlSet \Services \CDRom и присваиваем паpаметpу Autorun (его тип - REG_DWORD) значение 0.
+<P>
+Изменение порога выдачи предупреждения о недостатке свободного места на диске 
+Если на вашем диске остается свободным менее 10% (по умолчанию) места, то система информирует об этом появлением иконки в области уведомления (рядом с часиками). На дисках маленькой емкости этот порог вполне оправдан, но для дисков большой емкости (20 Гбайт -> 2 Гбайт) это не совсем удобно. Можно изменить порог в процентном соотношении:
+HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanmanServer\Parameters - параметр типа DWORD DiskSpaceThreshold, в котором указываете значение от 0 до 99 (т.е процент от объема диска) 
+<P>
+При старте компьютера вначале используются именно стандарные курсоры, а затем, при загрузке личных настроек пользователя, уже ваши, что не очень красиво. 
+Зайдя в "Редактор реестра" (набрать regedit в "выполнить"), находим там HKEY_CURRENT_USER \ Control Panel \ Cursors
+Все записи в этом разделе нам понадобятся, кроме того, если вы сохранили свой набор курсоров в схему, то понадобится и запись о ней (в ветке Schemes).
+Нужно, чтобы все эти записи появились в
+HKEY_USERS \ .DEFAULT \ Control Panel \ Cursors
+Сделать это можно по-разному, но проще всего экпортировать раздел HKEY_CURRENT_USER \ Control Panel \ Cursors в файл реестра (*.reg), затем
+отредактировать этот файл (хотя бы в "блокноте"), заменив "HKEY_CURRENT_USER" на "HKEY_USERS\.DEFAULT", а после добавить информацию из этого файла в реестр, сделав по нему двойной щелчок мышкой. 
+Теперь с самого начала вы увидите только свои курсоры. Вряд ли мы сэкономим время без необходимости загрузки второго набора курсоров, но чем черт не шутит...
+<P>СОВЕТУЮ СДЕЛАТЬ В ПЕРВУЮ ОЧЕРЕДЬ результат просто обалденный.
+В Windows XP появилась новая функция BootDefrag (или BootOptimize), суть которой заключается в следующем. Поскольку дефрагментация и оптимизация расположения на диске файлов, нужных системе во время загрузки, решающим образом влияет на весь процесс загрузки ОС, а пользователю часто лениво самому запускать дефрагментатор (не то чтобы даже часто, а почти всегда), то система теперь умеет сама - так сказать, без участия оператора - оптимизировать эти файлы, причем не как ей вздумается, а основываясь на данных все тех же файлов notosboot-B00DFAAD.pf и layout.ini. Правда, происходит автоматическая дефрагментация при простое системы - если пользователь 10-30 минут после загрузки ОС не производил никаких операций. А потому может случиться так, что на вашей интенсивно используемой системе файлы окажутся не оптимизированы. Проверить, произошла ли оптимизация, можно, заглянув в реестр - если в разделе HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\
+Dfrg\BootOptimizeFunction стоит параметр "OptimizeComplete"="Yes", то дефрагментация была произведена. Если же этого пока не случилось, то просто перегрузите ПК и оставьте его минут на тридцать в одиночестве - Windows сама все сделает, и ускорение следующей загрузки будет заметно даже на глаз.
+Только запомните, что перед оптимизацией ПК со свежеустановленной ОС должен иметь в своем багаже хотя бы три перезагрузки для накопления нужных данных. Штатный дефрагментатор Windows XP не отменяет эту оптимизацию, так что пользоваться им можно без опаски.
+Если же вы сомневаетесь, работает ли вообще у вас эта функция, или хотите ее отключить, то проверьте в реестре наличие параметра, включающего BootDefrag: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\
+Dfrg\BootOptimizeFunction - параметр "Enable"="Y". 
+<P>
+Уменьшение задержки вывода меню:
+Не секрет, что все меню Windows XP открываются с определенной задержкой, что иногда несколько раздражает. Для более быстрого открытия меню необходимо изменить значения ключа MenuShowDelay, расположенного в разделе HKEY_CURRENT_USER/Control Panel/Desktop. По умолчанию значение этого ключа равно 400. Если изменить это значение в 0, то Вы увидите значительное ускорение открытие меню.(советую 100, 0 слишком быстро)
+
+
+</TD></TR></TABLE>
+<DIV align=RIGHT><A HREF="works.html" TARGET="_TOP">Назад</A></DIV>
+
+</font></TD></TR></TABLE></TD></TR></TABLE></TD></TR></TABLE>
+<TABLE WIDTH="100%" BORDER="0"><TR><TD   ALIGN="RIGHT"> 
+<font size="1">Последнее обновление:
+<SCRIPT language=JavaScript>
+<!--
+
+ document.write(document.lastModified);
+
+// -->
+</SCRIPT></TD></TR></TABLE></FONT>
+<CENTER><FONT face="Times New Roman" size="1">Created by <a href="mailto:Jesprit@mail.ru">J<font color="FF0000">e</font>sprit</a>, 2003, Omsk 
+</FONT></CENTER>
+<SCRIPT language=JavaScript>
+<!--
+	window.defaultStatus =
+	"MySite. Copyright MySite Ltd."
+// -->
+</SCRIPT>
+</html>

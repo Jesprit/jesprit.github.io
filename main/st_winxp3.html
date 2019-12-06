@@ -1,0 +1,81 @@
+﻿<HTML>
+<HEAD>
+<TITLE>Меню</TITLE>
+<LINK href="style.css" type="text/css" rel="stylesheet">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+</HEAD>
+<BODY bgcolor="DCDCDC" link="0000FF" alink="0000FF" vlink="0000FF">
+<TABLE BORDER="0" WIDTH="100%" BGCOLOR="#0000FF" CELLSPACING="0" CELLPADDING="0"><TR><TD>
+<TABLE BORDER="0" WIDTH="100%" CELLSPACING="1" CELLPADDING="0">
+<TD BGCOLOR="1E90FF">
+<center> 
+<font COLOR="#DCDCDC" size="7">
+<DIV STYLE="filter:Shadow(Color='000000', Direction='45'); width: 400; height: 60; font-size: 35pt; font-weight: bold; text-align: center; color: #C0C0C0;">Статьи</DIV> 
+
+</font>
+
+</center>
+</TD></TR><TR><TD BGCOLOR="E0FFFF"  id=idcomic>
+<TABLE BGCOLOR="#99ccff" WIDTH="100%" BORDER="0" ALIGN="CENTER" CELLSPACING="0" CELLPADDING="0" >
+<TR ALIGN=CENTER >
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="index.html" TARGET="_TOP"><font size="2">Главная</font></A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="myself.html" TARGET="_TOP"><font size="2">О себе</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="photo.html" TARGET="_TOP"><font size="2">Photo</A></TD>
+<td id=idbord3 WIDTH="10%" align=center BGCOLOR="#E0FFFF"><A HREF="works.html" TARGET="_TOP"><font color="FF0000">Статейки</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="prog.html" TARGET="_TOP"><font size="2">Программы</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="link.html" TARGET="_TOP"><font size="2">Links</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="crack.html" TARGET="_TOP"><font size="2">Кряки</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="wallpaper.html" TARGET="_TOP"><font size="2">Wallpappers</B></A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="guest.html" TARGET="_TOP"><font size="2">Гостевая</A></TD>
+<td id=idbord4 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="cont.html" TARGET="_TOP"><font size="2">Контакты</A>
+</TD></TR></TABLE>
+<DIV align=RIGHT><A HREF="works.html" TARGET="_TOP">Назад</A></DIV>
+<center>
+<font face="Times New Roman"><font size="5" color="#808080">
+Удаляем лишнее
+</font>
+<TABLE WIDTH="100%" BORDER="0"  CELLSPACING="2" CELLPADDING="2"><TR><TD id=idbord2>
+
+Несмотря на все достоинства Windows XP, эта операционная система не лишена недостатков. 
+Самым простым примером является обязательная установка некоторых приложений, таких как игры, Windows Messenger и т.д. 
+Для удаления этих компонентов уже придумано множество хитроумных способов, (например, наша статья об удалении Windows Messenger), однако не все из них работают корректно, что иногда приводит к проблемам стабильности ОС. 
+Недавно мы получили письмо от одного нашего читателя, по имени Slavko, который предложил самый универсальный и простой способ удаления любых компонентов Windows XP стандартными средствами ОС. 
+Не смотря на свою простоту, этот метод может показаться не совсем понятным для начинающих пользователей.
+Итак, для активизации возможности удаления всех компонентов Windows XP необходимо изменить содержимое файла sysoc.inf, расположенного в скрытой папке WINDOWS\INF, или правильнее было бы указать %SystemRoot%\inf.
+<P>
+Открыв файл sysoc.inf с помощью notepad’a, Вы увидите, что он включает специальное описание программ в формате:<BR>
+program=dll.inf entry, OcEntry, program.inf entry, numeral<BR>
+Скрытые компоненты, содержат слово hide или HIDE. Для того, что бы сделать компонент видимым необходимо удалить это слово. Например, для открытия игры Pinball необходимо делать следующее:
+<P>
+Было: Pinball=ocgen.dll,OcEntry,pinball.inf,HIDE,7 <BR>
+Стало: Pinball=ocgen.dll,OcEntry,pinball.inf,,7<BR>
+Slavko рекомендует сделать автоматическую замену всех слов hide или HIDE. Что позволит сразу открыть все программы и компоненты.
+Сделав все изменения, сохраните файл sysoc.inf и войдите в панель управления - раздел «добавление и удаление программ» – «компоненты Windows», где откроются все скрытые, ранее, компоненты.
+<P>
+Теперь Вы можете удалить все, что кажется Вам лишним.<BR>Удачи.
+
+
+</TD></TR></TABLE>
+
+<DIV align=RIGHT><A HREF="works.html" TARGET="_TOP">Назад</A></DIV>
+
+
+</font></TD></TR></TABLE></TD></TR></TABLE></TD></TR></TABLE>
+<TABLE WIDTH="100%" BORDER="0"><TR><TD   ALIGN="RIGHT"> 
+<font size="1">Последнее обновление:
+<SCRIPT language=JavaScript>
+<!--
+
+ document.write(document.lastModified);
+
+// -->
+</SCRIPT></TD></TR></TABLE></FONT>
+<CENTER><FONT face="Times New Roman" size="1">Created by <a href="mailto:Jesprit@mail.ru">J<font color="FF0000">e</font>sprit</a>, 2003, Omsk 
+</FONT></CENTER>
+<SCRIPT language=JavaScript>
+<!--
+	window.defaultStatus =
+	"MySite. Copyright MySite Ltd."
+// -->
+</SCRIPT>
+</html>

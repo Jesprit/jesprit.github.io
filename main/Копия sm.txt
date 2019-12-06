@@ -1,0 +1,19 @@
+﻿<TABLE BORDER="0" WIDTH="95%" BGCOLOR="#c1e1f9" CELLSPACING="1" CELLPADDING="0"><TR><TD BGCOLOR="#79BCFF" WIDTH="20%"><B>
+<SCRIPT language=JavaScript> wrname ("{AUTHORNAME}")</SCRIPT></B></TD>
+<TD BGCOLOR="#79BCFF" WIDTH="30%"><CENTER><font size="2"><a href="mailto:{AUTHOREMAIL}">{AUTHOREMAIL}</a></TD>
+<TD BGCOLOR="#79BCFF"><CENTER><font size="2"><a href={URL} TARGET="_top">{URL}</A>
+</TD><TD BGCOLOR="#79BCFF" WIDTH="20%" ALIGN=RIGHT><font size="2"><CENTER>
+<SCRIPT LANGUAGE=javascript>
+document.write(C2UT({JSDATE}));
+</SCRIPT><NOSCRIPT>{DATE}</NOSCRIPT></CENTER></TD></TR>
+<TR><TD BGCOLOR="#ECFDFF" COLSPAN="4" ><CENTER><font size="2">
+<FORM><INPUT type=hidden value="{MESSAGE}" name=message></FORM>
+<SCRIPT language=JavaScript>
+m1 = document.forms[schet].message.value; {writems(m1);  schet=schet+1;}
+</SCRIPT></TD></TR>
+<TR><TD BGCOLOR="#e2e6f1" COLSPAN="4"><font size="2" color="#79BCFF"><CENTER><I>
+<FORM><INPUT type=hidden value="{OWNERREPLY}" name=message></FORM>
+<SCRIPT language=JavaScript>
+m1 = document.forms[schet].message.value; {writems(m1);  schet=schet+1}
+</SCRIPT></I></TD></TD></TR></TABLE>
+<TABLE WIDTH="94%" BGCOLOR="#c9cfdc" CELLSPACING="2" CELLPADDING="0"><TR><TD></TD></TR></TABLE><BR>

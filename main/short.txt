@@ -1,0 +1,275 @@
+﻿<HTML>
+<HEAD>
+<TITLE>Меню</TITLE>
+<script language="JavaScript">
+if (top == self) self.location.href = "http://jesprit.narod.ru/main/guest.html";
+</script>
+<LINK href="http://jesprit.narod.ru/main/style.css" type="text/css" rel="stylesheet">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<SCRIPT language=javascript>
+function ALZ(s) {
+  return (s<10?"0":"")+s.toString();  
+  }
+function C2UT(s) {
+  d=new Date(s);
+  return ALZ(d.getDate())+"."+ALZ(d.getMonth()+1)+"."+d.getFullYear()+" "
+             +ALZ(d.getHours())+":"+ALZ(d.getMinutes());
+  }
+</SCRIPT>
+<script language="JavaScript">
+var schet = 0;
+function MM_swapImgRestore() { 
+var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+function MM_preloadImages() { 
+var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_swapImage() { 
+var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+function mega()
+{
+var  zmes = "";
+var zi = 0;
+var zn = 0;
+zms ="";
+zmes = inside.your_message.value;
+zn =  zmes.length;
+for(zi=0;zi<zn;zi++)
+{
+zst1 = zmes.charAt(zi);
+zst = escape(zst1);
+if(zst == "%0D")
+ {
+  zst = zmes.charAt(zi+1);
+  zst = escape(zst);
+  if (zst == "%0A") {zst1 = '#3';zi++;}
+ 
+  }
+zms = zms + zst1;
+}
+inside.your_message.value = zms;
+inside.submit();
+}
+
+function wrname(s1)
+{
+var n = "";
+if(s1=="")  s1 = "<font color=#000000>не представился</font>";
+if(s1=="Jesprit")  s1 = "<font color=#0000ff >J<font color=#ff0000 >e</font>sprit</font><SUP> админ</SUP>";
+if(s1=="CHERTENOK")  s1 = "<font color=#0000ff >CHERTENOK</font><SUP>любимица</SUP>";
+if(s1=="SHIRLEY")  s1 = "<img src=http://jesprit.narod.ru/main/pictures/shirley.gif alt=SHIRLEY border=0 width=80 height=20>";
+
+n = "<font color=#FF0000>" + s1 + "</font>";
+document.write(n);
+}
+function megasm(kod)
+{
+inside.your_message.value += kod;
+}
+function writems(ms)
+{
+var i = 0;
+var max;
+var ss = "";
+var sk = "";
+var sk2 = "";
+max = ms.length;
+for(i=0;i<max;i++)
+{
+sk = ms.substring(i,i+1);
+  if(sk==":")
+  {
+  sk2 = ms.substring(i+1,i+2);
+  if (sk2 == "0") {sk = "<br>";i+=1;}
+  if (sk2 == ")") {sk = "<img src=http://jesprit.narod.ru/main/smile/m19.gif border = 0>";i+=1;}
+  if (sk2 == "2") {sk = "<img src=http://jesprit.narod.ru/main/smile/m33.gif border = 0>";i+=1;}
+  if (sk2 == "D") {sk = "<img src=http://jesprit.narod.ru/main/smile/m31.gif border = 0>";i+=1;}
+  if (sk2 == "(") {sk = "<img src=http://jesprit.narod.ru/main/smile/m18.gif border = 0>";i+=1;}
+  if (sk2 == "5") {sk = "<img src=http://jesprit.narod.ru/main/smile/m26.gif border = 0>";i+=1;}
+  if (sk2 == "6") {sk = "<img src=http://jesprit.narod.ru/main/smile/m27.gif border = 0>";i+=1;}
+  if (sk2 == "B") {sk = "<img src=http://jesprit.narod.ru/main/smile/m28.gif border = 0>";i+=1;}
+  if (sk2 == "8") {sk = "<img src=http://jesprit.narod.ru/main/smile/m29.gif border = 0>";i+=1;}
+  if (sk2 == "9") {sk = "<img src=http://jesprit.narod.ru/main/smile/m30.gif border = 0>";i+=1;}
+  if (sk2 == "A") {sk = "<img src=http://jesprit.narod.ru/main/smile/m32.gif border = 0>";i+=1;}
+  if (sk2 == "4") {sk = "<img src=http://jesprit.narod.ru/main/smile/m20.gif border = 0>";i+=1;}
+  if (sk2 == "C") {sk = "<img src=http://jesprit.narod.ru/main/smile/m25.gif border = 0>";i+=1;}
+  if (sk2 == "3") {sk = "<img src=http://jesprit.narod.ru/main/smile/m17.gif border = 0>";i+=1;}
+  if (sk2 == "E") {sk = "<img src=http://jesprit.narod.ru/main/smile/26.gif border = 0>";i+=1;}
+  if (sk2 == "F") {sk = "<img src=http://jesprit.narod.ru/main/smile/28.gif border = 0>";i+=1;}
+  if (sk2 == "G") {sk = "<img src=http://jesprit.narod.ru/main/smile/30.gif border = 0>";i+=1;}
+  if (sk2 == "H") {sk = "<img src=http://jesprit.narod.ru/main/smile/31.gif border = 0>";i+=1;}
+  if (sk2 == "I") {sk = "<img src=http://jesprit.narod.ru/main/smile/32.gif border = 0>";i+=1;}
+  if (sk2 == "Q") {sk = "<img src=http://jesprit.narod.ru/main/smile/33.gif border = 0>";i+=1;}
+  if (sk2 == "W") {sk = "<img src=http://jesprit.narod.ru/main/smile/34.gif border = 0>";i+=1;}
+  if (sk2 == "V") {sk = "<img src=http://jesprit.narod.ru/main/smile/35.gif border = 0>";i+=1;}
+  if (sk2 == "J") {sk = "<img src=http://jesprit.narod.ru/main/smile/23.gif border = 0>";i+=1;}
+  if (sk2 == "Z") {sk = "<img src=http://jesprit.narod.ru/main/smile/37.gif border = 0>";i+=1;}
+  if (sk2 == "Y") {sk = "<img src=http://jesprit.narod.ru/main/smile/38.gif border = 0>";i+=1;}
+  }
+ss += sk;
+}
+document.write(ss);
+}
+function test(ms)
+{
+var t = false;
+var i = 0;
+var max;
+var sk = "";
+var sk2 = "";
+max = ms.length;
+for(i=0;i<max;i++)
+{
+sk = ms.substring(i,i+1);
+  if(sk=="<")
+  {
+  sk2 = ms.substring(i+1,i+2);
+  if (sk2 == "s") {t = true;i+=1;}
+  if (sk2 == "S") {t = true;i+=1;}
+  if (sk2 == "h") {
+                  sk2 = ms.substring(i+2,i+3);
+                  if (sk2 == "t") {t = true;};
+                  i+=2;
+                  }
+  if (sk2 == "H") {
+                  sk2 = ms.substring(i+2,i+3);
+                  if (sk2 == "T") {t = true;};
+                  i+=2;
+                  }
+  }
+}
+return(t);
+}
+</script>
+<SCRIPT LANGUAGE="JavaScript">
+function checkIt() {
+
+if (document.inside.your_name.value != "") {} 
+else {
+alert("Напиши своё имя");
+document.inside.your_name.focus(); 
+return false;
+}
+
+if (document.inside.your_message.value != "") {return true;} 
+else {
+alert("Напиши текст сообщения!!!");
+document.inside.your_message.focus(); 
+return false;
+}
+}
+</SCRIPT>
+<script>
+var MaxLength = 1000;
+function DisplayLength(){
+  if ( inside.your_message.value.length > MaxLength )
+    inside.your_message.value = inside.your_message.value.substr( 0, MaxLength );
+  inside.remainchars.value = MaxLength - inside.your_message.value.length;
+}
+function CheckLength(){
+  event.returnValue = inside.your_message.value.length < MaxLength || document.selection.type != "None";
+}
+</script>
+<SCRIPT language=JavaScript>
+window.defaultStatus =
+"MySite. Copyright MySite Ltd."
+</SCRIPT>
+<SCRIPT language=JavaScript>
+schet = 1;
+</SCRIPT>
+
+</HEAD>
+
+<BODY bgcolor="DCDCDC">
+<TABLE BORDER="0" WIDTH="100%" BGCOLOR="#0000FF" CELLSPACING="1" CELLPADDING="0">
+<tr><TD BGCOLOR="1E90FF"><center> 
+<font COLOR="#DCDCDC" size="7">
+<DIV STYLE="filter:Blur(Add='1',Direction='10',Strength='50');  width: 500; height: 60; font-size: 35pt; font-weight: bold; text-align: center; color: #0000ff;">:: Гостевая книга ::</DIV> 
+</font></center></TD></TR>
+<TR><TD BGCOLOR="#E0FFFF" id=idcomic>
+
+<TABLE BGCOLOR="#99ccff" WIDTH="100%" BORDER="0" ALIGN="CENTER" CELLSPACING="0" CELLPADDING="0" >
+<TR ALIGN=CENTER >
+<td WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'" id=idbord1><A HREF="http://jesprit.narod.ru/main/index.html" TARGET="_TOP"><font size="2">Главная</font></A></TD>
+<td WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'" id=idbord1><A HREF="http://jesprit.narod.ru/main/myself.html" TARGET="_TOP"><font size="2">О себе</font></A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="http://jesprit.narod.ru/main/photo.html" TARGET="_TOP"><font size="2">Photo</font></A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="http://jesprit.narod.ru/main/works.html" TARGET="_TOP"><font size="2">Статейки</font></A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="http://jesprit.narod.ru/main/prog.html" TARGET="_TOP"><font size="2">Программы</font></A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="http://jesprit.narod.ru/main/link.html" TARGET="_TOP"><font size="2">Links</font></A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="http://jesprit.narod.ru/main/crack.html" TARGET="_TOP"><font size="2">Кряки</font></A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="http://jesprit.narod.ru/main/wallpaper.html"><font size="2" TARGET="_TOP">Wallpappers</font></A></TD>
+<td id=idbord3 WIDTH="10%" align=center BGCOLOR="#E0FFFF"><A HREF="http://jesprit.narod.ru/main/guest.html" TARGET="_TOP"><font color="FF0000">Гостевая</font></A></TD>
+<td id=idbord4 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="http://jesprit.narod.ru/main/cont.html" TARGET="_TOP"><font size="2">Контакты</font></A>
+</TD></TR></TABLE>
+
+<font size="2"> Edited by <font size="4">J<a href=http://narod.yandex.ru/userarea/after_register.xhtml?random_nocache=0.624937802870536 TARGET="_top" TITLE="ответить на сообщения"><font color="#FF0000">e</font></a><font color="#000000">sprit</font>
+<center><font color="#0000FF" size=2> 
+<div onClick="mesage.style.display='block'" OnDblClick="alert('Рекомендуется использовать Internet Explorer 5.5 или выше. А оставить сообщение вы можете, пойдя по этой ссылке: http://www.narod.ru/guestbook/?owner={OWNERID}&mainhtml=sgwrite.txt ')"><a href="#">Написать сообщение</a></div>
+
+<div id=mesage style="display:none">
+<FORM name="inside" action=leave_message.xhtml method=post id=idscroll >
+<div style="cursor:hand" onClick="mesage.style.display='none'" > <a href="#" class="active">X</a></div>
+<INPUT TYPE=HIDDEN NAME=owner VALUE={OWNERID}>
+<INPUT TYPE=HIDDEN NAME=newlocation
+VALUE=http://www.narod.ru/guestbook/?owner={OWNERID}&mainhtml=short.txt&messageshtml=sm.txt&mpp=5>
+<TABLE BORDER="0" WIDTH="100%" CELLSPACING="0"> 
+<TR><TD ALIGN=RIGHT WIDTH="35%">
+Имя:<BR>E-mail:<BR>URL: 
+</TD><TD>
+<INPUT id=idtable TYPE=TEXT SIZE=30 maxlength="30" NAME=your_name><BR>
+<INPUT id=idtable TYPE=TEXT SIZE=30 maxlength="30" NAME=your_email><BR>
+<INPUT id=idtable TYPE=TEXT SIZE=30 maxlength="40" NAME=your_url><BR>
+</td></tr>
+<TR><TD COLSPAN="2"><CENTER>
+Сообщение:<BR> <TEXTAREA NAME="your_message" id=idtable wrap=virtual ROWS=5 COLS=55 onPropertyChange = "DisplayLength();"onKeyPress = "DisplayLength();CheckLength();"onPaste = "CheckLength();"></TEXTAREA>
+<br>
+<font size="2">Осталось:  <input type="text" name="remainchars" value="1000" id=idtable1 size="2" readonly>символов</font></TD></TR>
+
+<TR><TD colspan="2"><center>
+<A href="javascript:megasm(':)')"><IMG src="http://jesprit.narod.ru/main/smile/m19.gif" WIDTH="15" HEIGHT="15" border=0></A>&nbsp; 
+<A href="javascript:megasm(':2')"><IMG src="http://jesprit.narod.ru/main/smile/m33.gif" WIDTH="15" HEIGHT="15" border=0></A>&nbsp; 
+<A href="javascript:megasm(':D')"><IMG src="http://jesprit.narod.ru/main/smile/m31.gif" WIDTH="15" HEIGHT="15" border=0></A>&nbsp; 
+<A href="javascript:megasm(':(')"><IMG src="http://jesprit.narod.ru/main/smile/m18.gif" WIDTH="15" HEIGHT="15" border=0></A>&nbsp;
+<A href="javascript:megasm(':5')"><IMG src="http://jesprit.narod.ru/main/smile/m26.gif" WIDTH="15" HEIGHT="15" border=0></A>&nbsp; 
+<A href="javascript:megasm(':6')"><IMG src="http://jesprit.narod.ru/main/smile/m27.gif" WIDTH="15" HEIGHT="15" border=0></A>&nbsp; 
+<A href="javascript:megasm(':B')"><IMG src="http://jesprit.narod.ru/main/smile/m28.gif" WIDTH="15" HEIGHT="15" border=0></A>&nbsp; 
+<A href="javascript:megasm(':8')"><IMG src="http://jesprit.narod.ru/main/smile/m29.gif" WIDTH="15" HEIGHT="15" border=0></A>&nbsp; 
+<A href="javascript:megasm(':9')"><IMG src="http://jesprit.narod.ru/main/smile/m30.gif" WIDTH="15" HEIGHT="15" border=0></A>&nbsp; 
+<A href="javascript:megasm(':A')"><IMG src="http://jesprit.narod.ru/main/smile/m32.gif" WIDTH="15" HEIGHT="15" border=0></A>&nbsp; 
+<A href="javascript:megasm(':4')"><IMG src="http://jesprit.narod.ru/main/smile/m20.gif" WIDTH="15" HEIGHT="15" border=0></A>&nbsp; 
+<A href="javascript:megasm(':C')"><IMG src="http://jesprit.narod.ru/main/smile/m25.gif" WIDTH="15" HEIGHT="15" border=0></A>&nbsp; 
+<A href="javascript:megasm(':3')"><IMG src="http://jesprit.narod.ru/main/smile/m17.gif" WIDTH="15" HEIGHT="15" border=0></A>&nbsp; <br>
+<A href="javascript:megasm(':E')"><IMG src="http://jesprit.narod.ru/main/smile/26.gif" border=0></A>&nbsp; 
+<A href="javascript:megasm(':F')"><IMG src="http://jesprit.narod.ru/main/smile/28.gif" border=0></A>&nbsp; 
+<A href="javascript:megasm(':G')"><IMG src="http://jesprit.narod.ru/main/smile/30.gif" border=0></A>&nbsp; 
+<A href="javascript:megasm(':H')"><IMG src="http://jesprit.narod.ru/main/smile/31.gif" border=0></A>&nbsp; 
+<A href="javascript:megasm(':I')"><IMG src="http://jesprit.narod.ru/main/smile/32.gif" border=0></A>&nbsp; 
+<A href="javascript:megasm(':Q')"><IMG src="http://jesprit.narod.ru/main/smile/33.gif" border=0></A>&nbsp; 
+<A href="javascript:megasm(':W')"><IMG src="http://jesprit.narod.ru/main/smile/34.gif" border=0></A>&nbsp; 
+<A href="javascript:megasm(':V')"><IMG src="http://jesprit.narod.ru/main/smile/35.gif" border=0></A>&nbsp; 
+<A href="javascript:megasm(':J')"><IMG src="http://jesprit.narod.ru/main/smile/23.gif" border=0></A>&nbsp; 
+<A href="javascript:megasm(':Z')"><IMG src="http://jesprit.narod.ru/main/smile/37.gif" border=0></A>&nbsp; 
+<A href="javascript:megasm(':Y')"><IMG src="http://jesprit.narod.ru/main/smile/38.gif" border=0></A>&nbsp; 
+</TD></TR>
+<TR><TD colspan="2"><center>
+<INPUT TYPE=SUBMIT id=idbutton VALUE="Добавить сообщение" onClick="mesage.style.display='none'" OnMouseMove="return checkIt()"></center>
+</TD></TR></TABLE></FORM></div>
+
+<P>
+{MESSAGES}
+
+<BR>
+<HR color="0000FF" size="1"><FONT face="Verdana" size="3">
+{PAGEBAR} 
+</font></center></TD></TR></TABLE>
+<P><CENTER><FONT face="Times New Roman" size="1">Created by <a href="mailto:Jesprit@mail.ru">J<font color="FF0000">e</font>sprit</a>, 2003-2004, Omsk 
+</FONT></CENTER>
+
+
+</body>
+</html>

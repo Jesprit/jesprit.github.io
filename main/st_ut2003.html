@@ -1,0 +1,369 @@
+﻿<HTML>
+<HEAD>
+<TITLE>Меню</TITLE>
+<LINK href="style.css" type="text/css" rel="stylesheet">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+</HEAD>
+<BODY bgcolor="DCDCDC" link="0000FF" alink="0000FF" vlink="0000FF">
+<TABLE BORDER="0" WIDTH="100%" BGCOLOR="#0000FF" CELLSPACING="0" CELLPADDING="0"><TR><TD>
+<TABLE BORDER="0" WIDTH="100%" CELLSPACING="1" CELLPADDING="0">
+<TD BGCOLOR="1E90FF">
+<center> 
+<font COLOR="#DCDCDC" size="7">
+<DIV STYLE="filter:Shadow(Color='000000', Direction='45'); width: 400; height: 60; font-size: 35pt; font-weight: bold; text-align: center; color: #C0C0C0;">Статьи</DIV> 
+
+</font>
+
+</center>
+</TD></TR><TR><TD BGCOLOR="E0FFFF"  id=idcomic>
+<TABLE BGCOLOR="#99ccff" WIDTH="100%" BORDER="0" ALIGN="CENTER" CELLSPACING="0" CELLPADDING="0" >
+<TR ALIGN=CENTER >
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="index.html" TARGET="_TOP"><font size="2">Главная</font></A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="myself.html" TARGET="_TOP"><font size="2">О себе</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="photo.html" TARGET="_TOP"><font size="2">Photo</A></TD>
+<td id=idbord3 WIDTH="10%" align=center BGCOLOR="#E0FFFF"><A HREF="works.html" TARGET="_TOP"><font color="FF0000">Статейки</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="prog.html" TARGET="_TOP"><font size="2">Программы</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="link.html" TARGET="_TOP"><font size="2">Links</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="crack.html" TARGET="_TOP"><font size="2">Кряки</A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="wallpaper.html" TARGET="_TOP"><font size="2">Wallpappers</B></A></TD>
+<td id=idbord1 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="guest.html" TARGET="_TOP"><font size="2">Гостевая</A></TD>
+<td id=idbord4 WIDTH="10%" align=center onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#E0FFFF'"><A HREF="cont.html" TARGET="_TOP"><font size="2">Контакты</A>
+</TD></TR></TABLE>
+<DIV align=RIGHT><A HREF="works.html" TARGET="_TOP">Назад</A></DIV>
+<center>
+<font face="Times New Roman"><font size="5" color="#808080">
+
+UT2003 / Тонкая настройка
+</font>
+<TABLE WIDTH="100%" BORDER="0"  CELLSPACING="2" CELLPADDING="2"><TR><TD id=idbord2>
+<CENTER>
+
+
+За настройки в UT2003 отвечают как и во всех играх на движке Unreal, начиная с самого Unreal, два файла: user.ini и ut2003.ini (те, кто только начал играть в UT2003, могут не знать таких "элементарных" для старых игроков вещей..). На случай проблем, связанных с неправильным изменением, утерей этих файлов в той же папке /system всегда лежат default.ini (эталон ut2003.ini) и defuser.ini (эталон user.ini), так что если начались проблемы - старые конфиги удаляются и на место них копируются указанные файлы (переустановка игры в 99% случаев не требуется). Ниже рассмотрены некоторые базовые параметры этих файлов.<br>
+По сложившейся порочной практике, пишут обычно о продвинутых настройках, типа дополнительных алиасов и команд, предполагая, что обычные настройки "и так все знают", в результате многие ни фига не знают и боятся спросить, чтобы не обозвали лохом. <br>
+При изменении конфигов как правило стремятся добиться максимальной производительности и удобства при игре, по возможности оставив картинку в приемлемом качестве. Единственной возможностью для достижения этой цели, на мой взгляд (по крайней мере для видеокарт на базе чипсетов nVidia), является переключение рендеринга с D3DDrv на OpenGLDrv. <br>
+Так же стоит обратить внимание, что некоторые опции не работают так, как задумано (например тени отключаются не совсем тенями, отключение HUD происходит только если он потом будет включен в GUI), многие опции продублированы в нескольких местах (например AmbientVolume можно отключить в одном месте, а он останется включен в другом), ниже приведены опции в том порядке, как они перечислены в файле поэтому будьте внимательны.
+ <P>
+ut2003.ini
+ <P>
+Карта при загрузке: по умолчанию используется логотип nVidia; выбор здесь невелик, можно, конечно изменить на Entry.ut2, но при этом будет извращенный доступ к меню; можно нарисовать карту самому в UnrealED.exe; меня пока устроил такой вариант:
+LocalMap=endgame.ut2<br>
+Рендеринг: на моей машине, при изменении всех настроек на максимальную производительность, в D3D слишком много текстурных багов, странное поведение мыши (при этом FPS могут ни с того ни с сего все равно падать "на ровном месте"), только в OpenGL реально растет производительность, при этом визуально картинка остается на уровне "высокого" микрософтовского д3д)
+<P>
+;RenderDevice=D3DDrv.D3DRenderDevice<br>
+;RenderDevice=Engine.NullRenderDevice<br>
+RenderDevice=OpenGLDrv.OpenGLRenderDevice <br>
+При игре в сети закаченные вами файлы (карты, мутаторы) хранятся в кэше, можно установить число дней их хранения:
+<P>
+PurgeCacheDays=30 
+ <P>
+Можно установить размер кэша, используемого игрой, в мегобайтах, в зависимости от размера установленной на компьютере физической памяти (не более ее половины):
+<P>
+CacheSizeMegs=32 <br>
+Можно (но не нужно :-) совсем отрубить звуки опцией (далее и везде: True - включено, False - выключено): <br>
+UseSound=True<br>
+Отображаемые меню: изменять строки не нужно, при желании можно изменять слова в самих файлах, на которые указывают данные параметры (например откройте в блокноте XInterface.int..)
+<P>
+MainMenuClass=XInterface.UT2MainMenu<br>
+ConnectingMenuClass=XInterface.MenuConnecting<br>
+DisconnectMenuClass=XInterface.UT2NetworkStatusMsg<br>
+ <P>
+Разрешение экрана, качество текстур для всех типов рендеринга:
+<P>
+[WinDrv.WindowsClient]
+WindowedViewportX=640 <- размер окна<br>
+WindowedViewportY=480 <- размер окна<br>
+FullscreenViewportX=640 <- размер экрана<br>
+FullscreenViewportY=480 <- размер экрана<br>
+MenuViewportX=640 <- размер меню<br>
+MenuViewportY=480 <- размер меню<br>
+Brightness=0.900000 <- яркость<br>
+Contrast=0.800000 <- контраст<br>
+Gamma=0.900000 <- насыщенность<br>
+UseJoystick=False <- джойстик<br>
+CaptureMouse=True <- мышь<br>
+StartupFullscreen=True <- полноэкранная загрузка<br>
+ScreenFlashes=False <- вспышки экрана<br>
+NoLighting=False <- без теней<br>
+MinDesiredFrameRate=100.000000 <- желаемый FPS<br>
+Decals=False <- следы пуль и т.п. <br>
+Coronas=False <- ореолы света<br>
+DecoLayers=False <- тени<br>
+Projectors=False <- тени<br>
+NoDynamicLights=True <- динамическое освещение<br>
+ReportDynamicUploads=False <- хз<br>
+TextureDetailInterface=UltraLow <- качество меню<br>
+TextureDetailTerrain=UltraLow <- качество карт<br>
+TextureDetailWeaponSkin=UltraLow <- качество оружия<br>
+TextureDetailPlayerSkin=UltraLow <- качество скинов<br>
+TextureDetailWorld=UltraLow <- качество объектов<br>
+TextureDetailRenderMap=UltraLow <- качество карт<br>
+TextureDetailLightmap=UltraLow <- качество карт<br>
+TextureMaxLOD=0 <- четкость текстур<br>
+TextureMinLOD=0 <- четкость меню<br>
+NoFractalAnim=True <- анимация карт<br>
+ScaleHUDX=0.000000 <- хз <br>
+Скорость сетевого канала, первое значение для интернет, желательно указывать максимальную скорость подключения (FPS не будет больше), но не выше реальной (иначе будут потери пакетов); второе - для локальной сети:
+<P>
+ConfiguredInternetSpeed=3600<br>
+ConfiguredLanSpeed=20000 <br>
+Громкость, качество звука и музыки, 50% загрузки процессора и влияние на FPS:
+<P>
+[ALAudio.ALAudioSubsystem] <br>
+UseEAX=False <- эффекты EAX<br>
+Use3DSound=False <- объемный звук<br>
+UseDefaultDriver=True <- встроенный ALAudio.dll<br>
+CompatibilityMode=True <- режим совместимости<br>
+UsePrecache=True <- предварительное кэширование<br>
+ReverseStereo=false <- стерео наоборот<br>
+Channels=16 <- число каналов звука<br>
+MusicVolume=0.000000 <- громкость музыки<br>
+AmbientVolume=0.000000 <- громкость среды<br>
+SoundVolume=0.560000 <- громкость звуков<br>
+DopplerFactor=1.000000 <- эффект звука<br>
+Rolloff=0.500000 <- хз<br>
+TimeBetweenHWUpdates=15.000000 <- время обновлений<br>
+DisablePitch=False<br>
+LowQualitySound=True <- низкое качество звука<br> 
+ <P>
+Настройки сервера, некоторые из которых влияют на FPS подключенных к серверу игроков (чем выше значения, тем больше у них FPS), рекомендуются до 100, в зависимости от числа подключенных игроков но влияют на трафик и загрузку процессора сервера (поэтому некоторые админы когда очень хочется иметь сервер, а трафик жалко или канал тонкий, или на одной слабой машине запускают сразу пять серверов U, UT, UT2003 и еще CS до кучи, то оставляют игрокам по 10FPS на комп грубо говоря, в этом часто заключается разница между буржуйскими "быстрыми" серверами с большим пингом от некоторых российских "медленных" но с маленьким пингом):
+<P>
+[IpDrv.TcpNetDriver] <br>
+AllowDownloads=True <- разрешает качать с сервера<br>
+ConnectionTimeout=120.0 <- время, которое сервер ждет прежде чем отключить не отвечающего игрока<br>
+InitialConnectTimeout=200.0 <- то же самое, но при коннекте<br>
+MaxClientRate=20000 <- максимальная пропускная способность, разрешенная сервером-клиенту; для каждого клиента, используется минимальная клиентская скорость но не выше указанной, не влияет на трафик клиент-сервер; если админ установит равной 2600 - у всех скорость коннекта не будет выше ни при каком подключении, если оставит 20000 - играть на модеме против лоупингеров будет невозможно; оптимальное значение для инет-сервера, уравнивающее игроков 4000-5000(max), для lan-сервера 20000<br>
+NetServerMaxTickRate=35 <- серверный "fps" инет-серверов на 10 игроков, для дуэлей рекомендуется 50<br>
+LanServerMaxTickRate=50 <- серверный "fps" по lan, может быть еще выше
+ <P>
+Название сервера, имя админа при запуске сервера:
+<P>
+[Engine.GameReplicationInfo] <br>
+ServerName=Самый быстрый сервер<br>
+ShortName=Сервер<br>
+ServerRegion=0<br>
+AdminName=Вася Пупкин<br>
+AdminEmail=вася@пупк.ин 
+ <P>
+При запуске сервера в интернет стоит учитывать региональный фактор, иными словами, если вы создаете сервер и включаете на нем глобальную статистику, имейте в виду, что при обсчете статистики будут проверяться CD-Keys подключенных игроков, соответственно играть на таком сервере не смогут игроки, купившие игру за 80 рублей/диск. 
+ <P>
+Настройки рендеринга OpenGL:
+<P>
+[OpenGLDrv.OpenGLRenderDevice] <br>
+DetailTextures=False <- мелкие детали<br>
+HighDetailActors=False <- детали объектов<br>
+SuperHighDetailActors=False <- те же яйца, но круче<br>
+UsePrecaching=True <- кэширование<br>
+UseCompressedLightmaps=True <- сжатие<br>
+UseTrilinear=False <- фильтрация<br>
+UseStencil=False<br>
+MaxTextureUnits=8<br>
+VARSize=32<br>
+DetailTexMipBias=0.000000 <- четкость<br>
+Use16bitTextures=True <- битность текстур<br>
+Use16bit=False <- битность картинки<br>
+DescFlags=0<br>
+Description=<br>
+ReduceMouseLag=False <- компенсатор лага мыши 
+ <P>
+Настройки рендеринга Direct3D:
+<P>
+[D3DDrv.D3DRenderDevice] <br>
+DetailTextures=False <- мелкие детали<br>
+HighDetailActors=False <- детали объектов<br>
+SuperHighDetailActors=False <- супер детали объектов<br>
+UsePrecaching=True <- кэширование<br>
+UseTrilinear=False <- фильтрация<br>
+AdapterNumber=-1<br>
+ReduceMouseLag=False <- компенсатор лага мыши<br>
+UseTripleBuffering=False <- буферизация<br>
+UseHardwareTL=True <- обработка видеокартой или процом<br>
+UseHardwareVS=True <- обработка видеокартой или процом<br>
+UseCubemaps=False <- использование Cubemaps<br>
+DesiredRefreshRate=100 <- скока вешать fps<br>
+UseCompressedLightmaps=True <- сжатые текстуры<br>
+UseStencil=False<br>
+Use16bit=False <- битность экрана<br>
+Use16bitTextures=True <- битность текстур<br>
+MaxPixelShaderVersion=255 <- макс. версия шейдеров<br>
+UseVSync=False <- синхронизация fps с частотой<br>
+LevelOfAnisotropy=0 <- анизотропия<br>
+DetailTexMipBias=0.8 <- четкость текстур<br>
+DefaultTexMipBias=0.0 <- по умолчанию<br>
+UseNPatches=False <- использование н-патчей<br>
+TesselationFactor=1.0 <- хз<br>
+CheckForOverflow=False <- хз<br>
+AvoidHitches=True <- избегать дерганье <br>
+ <P>
+Скорость курсора в меню:
+<P>
+MenuMouseSens=1.25<br>
+Адрес мастер-сервера (проверяющего между делом CD-Key), знаете другой - укажите здесь:
+<P>
+MasterServerAddress[0]=ut2003master1.epicgames.com 
+ <P>
+Уровень детализации физики:
+<P>
+PhysicsDetailLevel=PDL_Low
+ <P>
+Качество звука:
+<P>
+bLowSoundDetail=True
+ <P>
+Уровень окружающего звука:
+<P>
+AmbientVolume=0.00
+ <P>
+Шкала декалов:
+<P>
+DecalStayScale=0.0
+ <P>
+Кэширование:
+<P>
+bNeverPrecache=false
+Привязка FPS к пакетам (к серверу) для "большей плавности игры", если не отключить - ваши FPS всегд будут ровно 64:
+<P>
+bCapFramerate=false
+ <P>
+Фавориты, заносятся в любом количестве, копируете строку, меняете адрес, порт и название, например:
+<P>
+[XInterface.Browser_ServerListPageFavorites]
+Favorites=(ServerID=0,IP="62.236.157.244",Port=8008,QueryPort=8009,ServerName="Leikkipuisto UT2003 05 DM")<P>
+User.ini<P>
+ 
+Алиасы - команды и их синонимы, прописываемые в дальнейшем на различные клавиши. В дефолтных значениях можно изменять скорость поворотов, прыжков (например вместо +300.0 выставить +900.0) и др. (некоторые из команд не будут работать в сетевой игре), либо забивать на клавиши не используемые игрой, например указанный алиас поворота на 180 градусов по дефолту не назначен ни на какую кнопку: <br>
+Aliases[26]=(Command="Button bTurn180",Alias=Turn180)
+Кнопки указаны ниже по тексту, значение присваивается то, что написано после Alias=.
+Описание каких-либо особенных алиасов выходит за рамки данной статьи, если вам нужны какие-то нестандартные алиасы или желаете написать свой собственный читайте про это у Volf'a .
+<P>
+Чувствительность мыши определяется несколькими значениями, первые по списку идут: <br>
+MouseX=Count bXAxis | Axis aMouseX Speed=0.010<br>
+MouseY=Count bYAxis | Axis aMouseY Speed=0.010<br>
+MouseZ=Count bZAxis | Axis aMouseZ Speed=0.010<br>
+<P>
+Занижение скорости здесь необходимо для более плавного перемещения прицела, общая скорость при этом восстанавливается значением общей чувствительности:
+MouseSensitivity=600.000000<br>
+При этом указанные значения не являются ни в коей мере эталонными, и, более того, под разными операционными системами и даже различными драйверами дают различную скорость перемещения указателя использующего их юзера. В каждом конкретном случае чувствительность мыши стоит устанавливать опытным путем, определив значения MouseX/Y/Z в пределах 0.1 - 0.001 и дальше "подгоняя" под себя и свою систему параметр MouseSensitivity. 
+<P>
+Опции игры: <br>
+[Engine.PlayerController] <br>
+bNeverSwitchOnPickup=false <- не переключаться на поднятое<br>
+bNoVoiceMessages=true <- нет голосовых сообщений<br>
+bNoVoiceTaunts=true <- нет воплей<br>
+bNoAutoTaunts=true <- нет авто-воплей<br>
+bAutoTaunt=false <- авто-вопли<br>
+bNoMatureLanguage=false <- убрать нецензурщину<br>
+AnnouncerVolume=4 <- голос "за кадром"<br>
+DesiredFOV=105.000000 <- хочу поле зрения<br>
+DefaultFOV=105.000000 <- всегда поле зрения<br>
+MaxTimeMargin=1.000000 <- хз<br>
+ngWorldSecret= <- пароль статистики<br>
+bLookUpStairs=False <- смотреть вверх лестниц<br>
+bSnapToLevel=False <- хз<br>
+bAlwaysMouseLook=True <- всегда мышью<br>
+bKeyboardLook=False <- смотреть клавой<br>
+bAlwaysLevel=False <- хз<br>
+ngSecretSet=False <- есть пароль статистики NetGames<br>
+TeamBeaconMaxDist=4000.000000 <- расстояние видимости значков тиммейтеров<br>
+TeamBeaconPlayerInfoMaxDist=1200.000000 <- расстояние видимости инфы о тиммейтерах<br>
+TeamBeaconTexture=TeamSymbols.TeamBeaconT <- текстура значка тиммейтера<br>
+TeamBeaconTeamColors[0]=(B=0,G=0,R=180,A=255) <- цвета значков<br>
+TeamBeaconTeamColors[1]=(B=200,G=80,R=80,A=255) <- цвета значков<br>
+TeamBeaconCustomColor=(B=0,G=255,R=255,A=255) <- цвета значков<br>
+TeamBeaconUseCustomColor=True <- использовать свой цвет<br>
+MaxResponseTime=0.500000 <- время реакции<br>
+AnnouncerLevel=2 <- голос за кадром<br>
+AimingHelp=0.000000 <- помощь в прицеливании<br>
+StatsUsername=planetunreal.ru <- имя в статистике StatsPassword=:-) <- пароль там же<br>
+bEnablePickupForceFeedback=True <- реакция на поднятие<br>
+bEnableWeaponForceFeedback=False <- отдача оружия<br>
+bEnableDamageForceFeedback=True <- реакция на демедж<br>
+bEnableGUIForceFeedback=False <- отдача в интерфейсе (?)
+<P>
+Видимость оружия: <br>
+[Engine.Controller] <br>
+Handedness=2.000000 <- откуда руки растут 
+<P>
+Неясное значение: <br>
+[XGame.xPlayer] <br>
+EnemyTurnSpeed=45000 <- скорость ботов или где (?)<br>
+InputClass=Class'Engine.PlayerInput' 
+<P>
+Можно инвертировать мышь: <br>
+bInvertMouse=false
+<P>
+Значения плавности перемешения прицела, можно экспериментировать: <br>
+MouseSmoothingMode=1<br>
+MouseSmoothingStrength=+0.3<br>
+MouseSamplingTime=+0.008333<br>
+<P>
+Включение доджинга, в отличие от первого UT скорость его по-дефолту не изменяется: <br>
+bEnableDodging=true <br>
+<P>
+Раскачка прицела при движении: <br>
+Bob=0.0000 <- меткие отцы могут единичку поставить
+<P>
+Раскачка оружия: <br>
+bWeaponBob=false <- если оно скрыто, то без разницы
+<P>
+Далее можно настроить HUD: <br>
+bHideHUD=False <- скрыть его, не пашет и глючит<br>
+HudScale=1.000000 <- его размер, 0.5 смешно очень<br>
+HudCanvasScale=1.000000 <- размер подложки, не пашет<br>
+bMessageBeep=true <- звук сообщений<br>
+bShowWeaponInfo=true <- инфа оружия<br>
+bShowPersonalInfo=true <- ваша инфа<br>
+bShowPoints=true <- показывать поинты<br>
+bCrosshairShow=true <- показывать прицел<br>
+CrosshairScale=0.500000 <- размер прицела<br>
+CrosshairOpacity=1.000000 <- прозрачность прицела<br>
+CrosshairStyle=4 <- тип прицела<br>
+ConsoleMessageCount=4 <- значение для сообщений<br>
+ConsoleFontSize=5 <- размер шрифта консоли<br>
+MessageFontOffset=0 <- шрифт сообщений<br>
+bShowWeaponBar=True <- панель оружия<br>
+bShowPortrait=False <- лицо игрока в сообщении<br>
+HudOpacity=80.000000 <- прозрачность HUD<br>
+CrossHairColor=(B=255,G=255,R=255,A=255) <- цвет прицела
+<P>
+Далее идет перечень всего оружия с указанием приоритета и альтернативной стрельбы в каждом: <br>
+ExchangeFireModes=0 <- единица меняет альтернатив на примари<br>
+Priority=1<- приоритет, чем ниже - тем выше <br>
+<P>
+Тени игрока, не знаю в каком стиле игры и влияет ли: <br>
+[UnrealGame.UnrealPawn] <br>
+bPlayerShadows=False
+<P>
+Вот, собственно, все. Если есть дополнения или иная точка зрения - пишите в комментариях.. <P>
+
+   Extrim IT © 2003
+ 
+
+
+
+
+</TD></TR></TABLE>
+
+<DIV align=RIGHT><A HREF="works.html" TARGET="_TOP">Назад</A></DIV>
+
+
+</font></TD></TR></TABLE></TD></TR></TABLE></TD></TR></TABLE>
+<TABLE WIDTH="100%" BORDER="0"><TR><TD   ALIGN="RIGHT"> 
+<font size="1">Последнее обновление:
+<SCRIPT language=JavaScript>
+<!--
+
+ document.write(document.lastModified);
+
+// -->
+</SCRIPT></TD></TR></TABLE></FONT>
+<CENTER><FONT face="Times New Roman" size="1">Created by <a href="mailto:Jesprit@mail.ru">J<font color="FF0000">e</font>sprit</a>, 2003, Omsk 
+</FONT></CENTER>
+<SCRIPT language=JavaScript>
+<!--
+	window.defaultStatus =
+	"MySite. Copyright MySite Ltd."
+// -->
+</SCRIPT>
+</html>
+ 

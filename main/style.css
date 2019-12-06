@@ -1,0 +1,213 @@
+﻿a { color: #0000FF; text-decoration: none; target: top;}
+a:visited { color: ##0000FF; text-decoration: none; }
+a:hover { color: #004c75; text-decoration: underline;}
+
+body { margin-left: 0px; margin-right: 3px; margin-top: 3px;} 
+
+
+#idcomic { font-family: Comic Sans MS, Helvetica, Arial;
+font-size: 13;
+}
+
+#idbord1  { 
+border-top-width:1;
+border-bottom-width:1;
+border-left-width:1;
+border-right-width:0;
+border-style: dotted;
+border-color:#3399ff;
+padding: 0;
+}
+
+#idbord2  { 
+border-top-width:1;
+border-bottom-width:0;
+border-left-width:0;
+border-right-width:0;
+border-style: dashed;
+border-color:#c1e1f9;
+padding: 4;
+}
+
+#idbord3  { 
+border-top-width:1;
+border-bottom-width:0;
+border-left-width:1;
+border-right-width:0;
+border-style:dotted;
+border-color:#c1e1f9;
+padding: 0;
+}
+
+#idbord4  { 
+border-top-width:1;
+border-bottom-width:1;
+border-left-width:1;
+border-right-width:1;
+border-style: dotted;
+border-color:#3399ff;
+padding: 0;
+}
+
+#idbord5  { 
+border-top-width:0;
+border-bottom-width:0;
+border-left-width:1;
+border-right-width:0;
+border-style:solid;
+border-color:#c1e1f9;
+padding: 0;
+}
+#idbord6  { 
+border-top-width:1;
+border-bottom-width:1;
+border-left-width:0;
+border-right-width:0;
+border-style:solid;
+border-color:#c1e1f9;
+padding: 0;
+}
+
+#idbord7  { 
+border-top-width:1;
+border-bottom-width:1;
+border-left-width:0;
+border-right-width:1;
+border-style: solid;
+border-color:#0000FF;
+padding: 0;
+}
+
+#bnews1  { 
+border-top-width:0;
+border-bottom-width:1;
+border-left-width:1;
+border-right-width:1;
+border-style: solid;
+border-color:#c1e1f9;
+padding: 0;
+}
+#bnews2  { 
+border-top-width:0;
+border-bottom-width:1;
+border-left-width:0;
+border-right-width:0;
+border-style: solid;
+border-color:#c1e1f9;
+padding: 0;
+font-size: 1px ;
+
+}
+#bnews3  { 
+border-top-width:1;
+border-bottom-width:0;
+border-left-width:1;
+border-right-width:0;
+border-style: solid;
+border-color:#c1e1f9;
+padding: 0;
+}
+
+
+#idtable1 {
+BORDER-RIGHT: #afd6eb 1px solid;
+BORDER-TOP: #afd6eb 1px solid; 
+BORDER-LEFT: #afd6eb 1px solid; COLOR: #000000;
+BORDER-BOTTOM: #afd6eb 1px solid; 
+BACKGROUND-COLOR: #afd6eb
+}
+
+#idtable {
+BORDER-RIGHT: #000000 1px solid;
+BORDER-TOP: #000000 1px solid; 
+BORDER-LEFT: #000000 1px solid; COLOR: #000000;
+BORDER-BOTTOM: #000000 1px solid; 
+BACKGROUND-COLOR: #eaf5ff
+}
+#idbutton {
+BORDER-RIGHT: #000000 1px solid;
+BORDER-TOP: #000000 1px solid; 
+BORDER-LEFT: #000000 1px solid; COLOR: #000000;
+BORDER-BOTTOM: #000000 1px solid; 
+BACKGROUND-COLOR: #b3d9ff
+}
+
+#idscroll {
+scrollbar-face-color:#99ccff;
+scrollbar-highlight-color:#eaf5ff;
+scrollbar-3dlight-color:#eaf5ff;
+scrollbar-darkshadow-color:#eaf5ff;
+scrollbar-shadow-color:#eaf5ff;
+scrollbar-arrow-color:#eaf5ff;
+scrollbar-track-color:#eaf5ff;
+}
+#idscroll1 {
+scrollbar-face-color:#eaf5ff;
+scrollbar-highlight-color:#eaf5ff;
+scrollbar-3dlight-color:#eaf5ff;
+scrollbar-darkshadow-color:#eaf5ff;
+scrollbar-shadow-color:#eaf5ff;
+scrollbar-arrow-color:#eaf5ff;
+scrollbar-track-color:#eaf5ff;
+}
+
+#mesage
+{
+z-index: 5;
+position: absolute;
+top: 110px;
+left: 20%;
+height: 320px;
+width: 60%;
+background-color: #afd6eb;
+border-top-width:1;
+border-bottom-width:1;
+border-left-width:1;
+border-right-width:1;
+border-style:solid;
+padding: 0;
+border-color:#000000;
+
+}
+#font5 { font-size: 12px ; }
+#font1 { font-size: 3px ; }
+
+.active { 
+z-index: 1;
+position: relative;
+background-color: #87CEFA;
+color: #000000;
+text-decoration: none;
+font-family: System;
+font-size: 12px;
+padding-top: 1px;
+padding-right: 4px;
+padding-left: 5px;
+padding-bottom: 1px;
+top: 5px;
+left: 47%;
+height: 19px;
+width: 20px;
+border-width: 1px;
+border-style: solid;
+border-color: #000000;  }
+
+:hover.active { 
+position: relative;
+background-color: #90B7CC;
+color: #000000;
+text-decoration: none;
+font-family: System;
+font-size: 12px;
+padding-top: 1px;
+padding-right: 4px;
+padding-left: 5px;
+padding-bottom: 1px;
+top: 5px;
+left: 47%;
+height: 19px;
+width: 20px;
+border-width: 1px;
+border-style: solid;
+border-color: #000000;  }
+
