@@ -1,0 +1,82 @@
+body {
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 0px;
+	background-color: #fff;
+	height: 100%;
+	}
+	
+html { 
+	font-family: arial, verdana, sans-serif;
+    background:url('logo_big.jpg') no-repeat ;
+	background-position: 80% 0%;
+//	background-size: 40%;
+	}
+
+#MainBlock {
+	z-index: 2;
+	position: absolute; 
+	top: 18%; 
+	left: 10%; 
+	width: 80%; 
+	min-width: 800px;
+	border: 1px solid;
+	border-color: #000;
+	background-color: #444;
+	opacity: 0.9;
+	filter:alpha(opacity=80);
+	-moz-opacity:0.9;
+	}
+#MainBlockText1 {
+	text-align: left;
+
+	color: #fff;
+	font-size: 28px;
+	}
+#MainBlockText2 {
+	text-align: left;
+
+	color: #fff;
+	font-size: 20px;
+	}
+	
+#MiniLogoBlock{
+	z-index:1;
+	position: absolute; 
+	top: 0; 
+	left: 15%; 
+	height: 126px;
+	text-align: left;
+	color: #000;
+	font-size: 24px;
+	font-weight: bold;
+	}
+	
+#TripleBlock{
+	z-index:1;
+	position: absolute; 
+	border: 0px solid;
+	top: 47%; 
+	left: 10%; 
+	width: 80%; 
+	color: #000;
+	font-size: 16px;
+	text-align: center;
+
+	}
+#TripleImg {
+	min-width: 260px;
+	border: 1px solid;
+	border-color: #000;
+	}
+
+#CreatedByJesprit {
+	z-index:1;
+	position: absolute;
+	top: 98%; 
+	left: 90%;
+	color: #ccc;
+	font-size: 14px;
+	text-align: right;
+	}
+	
