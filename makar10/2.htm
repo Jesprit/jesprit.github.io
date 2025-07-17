@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Загадка №2</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header"></div>
+        <div class="content">
+            <div class="card">
+                <div class="accent-banner"></div>
+                <div class="response-container">
+                    <h1 class="title">Вторая загадка</h1>
+                    <div class="message">
+В центре асфальтированого кольца лучше видно куда дальше.<p>
+Найди круговую дорогу и осмотрись.
+                    </div>
+                    <div class="hint-container">
+                        <div>Подсказка:</div>
+                        <div id="blocks">
+                            <!-- Скрытый текст, который появится после таймера -->
+                            <div id="hide_text" class="hidden">
+                                
+                                <img width="95%" src="2.png" alt="Подсказка">
+                            </div>
+                            <!-- Таймер обратного отсчета -->
+                            <div id="timer_inp">60</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="disclaimer">С днём рожденья Макар!!!</div>
+        </div>
+    </div>
+
+    <script>
+        // Функция таймера обратного отсчета
+        function timer() {
+            var timerElement = document.getElementById('timer_inp');
+            timerElement.innerHTML--;
+
+            if (timerElement.innerHTML == 0) {
+                // Показываем подсказку и скрываем таймер
+                document.getElementById('hide_text').classList.remove('hidden');
+                timerElement.classList.add('hidden');
+            } else {
+                setTimeout(timer, 1000);
+            }
+        }
+        // Запускаем таймер через 1 секунду после загрузки
+        setTimeout(timer, 1000);
+    </script>
+</body>
+</html>

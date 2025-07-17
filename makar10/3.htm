@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<script type="text/javascript" src="3.js"></script>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Загадка №3</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header"></div>
+        <div class="content">
+            <div class="card">
+                <div class="accent-banner"></div>
+                <div class="response-container">
+                    <h1 class="title">Третья загадка</h1>
+                    <div class="message">
+<div id="box"></div>
+<button id="reset">Начать заново</div>
+                    </div>
+                    <div class="hint-container">
+                        <div>Подсказка:</div>
+                        <div id="blocks">
+                            <!-- Скрытый текст, который появится после таймера -->
+                            <div id="hide_text" class="hidden">
+                                <h1>Правила игры в Пятнашки</h1>
+    
+    <div class="rules-container">
+        <div class="rule">
+            <h2>Цель игры</h2>
+            <p>Расставить все квадратики по порядку от 1 до 15, чтобы в правом нижнем углу осталась пустая клетка.</p>
+        </div>
+        
+        <div class="rule">
+            <h2>Как играть</h2>
+            <ul>
+                <li>Передвигай квадратики <strong>по одному</strong>, сдвигая их на пустую клетку.</li>
+                <li>Можно двигать <strong>только те квадратики, что рядом с пустотой</strong> (вверх/вниз/влево/вправо).</li>
+            </ul>
+        </div>
+        
+        <div class="rule">
+            <h2>Совет</h2>
+            <p>Сначала собери верхний ряд (1-2-3-4), потом следующий и так далее. Это как головоломка — нужно думать на шаг вперёд!</p>
+        </div>
+    </div>
+                                
+                            </div>
+                            <!-- Таймер обратного отсчета -->
+                            <div id="timer_inp">10</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="disclaimer">С днём рожденья Макар!!!</div>
+        </div>
+    </div>
+
+    <script>
+        // Функция таймера обратного отсчета
+        function timer() {
+            var timerElement = document.getElementById('timer_inp');
+            timerElement.innerHTML--;
+
+            if (timerElement.innerHTML == 0) {
+                // Показываем подсказку и скрываем таймер
+                document.getElementById('hide_text').classList.remove('hidden');
+                timerElement.classList.add('hidden');
+            } else {
+                setTimeout(timer, 1000);
+            }
+        }
+        // Запускаем таймер через 1 секунду после загрузки
+        setTimeout(timer, 1000);
+    </script>
+</body>
+</html>
