@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ШПИОНСКИЙ КВЕСТ • МАКАР 11</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+        :root {
+            --neon-green: #39ff14;
+            --neon-blue: #00f0ff;
+            --neon-pink: #ff00aa;
+        }
+        
+        body {
+            font-family: 'Press Start 2P', system-ui;
+            background: #0a0a0a;
+            color: #39ff14;
+            overflow-x: hidden;
+        }
+        
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent 50%, rgba(57, 255, 20, 0.03) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 10;
+            animation: scan 4s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        
+        .neon-text {
+            text-shadow: 
+                0 0 10px var(--neon-green),
+                0 0 20px var(--neon-green),
+                0 0 40px var(--neon-blue);
+        }
+        
+        .btn-spy {
+            transition: all 0.1s;
+            box-shadow: 0 0 20px var(--neon-green);
+        }
+        
+        .btn-spy:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+        
+        .terminal {
+            background: rgba(0, 20, 0, 0.9);
+            border: 2px solid #39ff14;
+            box-shadow: inset 0 0 30px rgba(57, 255, 20, 0.2);
+        }
+        
+        .tile {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            background: #111;
+            border: 3px solid #39ff14;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tile:empty {
+            background: #1a1a1a;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <div class="scanline"></div>
+    
+    <!-- HEADER -->
+    <header class="bg-black border-b-4 border-[#39ff14] p-4 flex items-center justify-between sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-[#39ff14] text-black flex items-center justify-center text-2xl font-bold rotate-12">🔍</div>
+            <div>
+                <h1 class="text-xl neon-text">ШПИОН МАКАР</h1>
+                <p class="text-xs text-[#00f0ff]">ОПЕРАЦИЯ «ЗЕЛЁНЫЙ ОСТРОВ»</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <button onclick="toggleMute()" id="muteBtn" class="text-3xl">🔊</button>
+            <div id="progress" class="text-xs text-right">
+                ШАГ <span id="stepNum" class="text-2xl text-white">1</span>/9
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 p-4 pb-20 max-w-xl mx-auto w-full">
+        <!-- STEP 1 -->
+        <div id="step1" class="step">
+            <div class="terminal p-6 rounded-xl mb-8">
+                <h2 class="text-center text-2xl mb-6 neon-text">АКТИВИРОВАТЬ ШПИОНСКИЙ КАНАЛ</h2>
+                <button onclick="startMission()" 
+                        class="w-full btn-spy bg-black hover:bg-[#111] border-4 border-[#39ff14] text-[#39ff14] py-8 text-3xl rounded-xl">
+                    НАЧАТЬ МИССИЮ
+                </button>
+            </div>
+            
+            <div id="riddlesContainer" class="hidden">
+                <div class="mb-6">
+                    <div class="flex justify-between text-xs mb-2">
+                        <span>ЗАГАДКА <span id="riddleNum">1</span>/11</span>
+                        <span id="timer" class="text-[#ff00aa]">10:00</span>
+                    </div>
+                    <div id="riddleText" class="terminal p-6 text-lg leading-relaxed min-h-[180px]"></div>
+                </div>
+                
+                <button onclick="showHint()" 
+                        class="w-full mb-4 py-3 border border-[#ff00aa] text-[#ff00aa] text-sm">
+                    ПОДСКАЗКА (через <span id="hintTimer">600</span> сек)
+                </button>
+                
+                <div class="flex gap-3">
+                    <input id="riddleAnswer" 
+                           class="flex-1 bg-black border-2 border-[#00f0ff] p-4 text-white text-xl"
+                           placeholder="ВВЕДИ ОТВЕТ" 
+                           onkeypress="if(event.key==='Enter') checkRiddle()">
+                    <button onclick="checkRiddle()" 
+                            class="px-8 bg-[#39ff14] text-black font-bold">→</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2: 15-PUZZLE -->
+        <div id="step2" class="step hidden">
+            <h2 class="text-center text-2xl mb-6 neon-text">ПЯТНАШКИ • НАЙДИ КОД</h2>
+            <div id="puzzle" class="grid grid-cols-4 gap-2 mx-auto" style="width: 280px;"></div>
+            <button onclick="resetPuzzle()" 
+                    class="mt-8 w-full py-4 border border-[#00f0ff] text-[#00f0ff]">ПЕРЕМЕШАТЬ</button>
+        </div>
+
+        <!-- STEP 3 -->
+        <div id="step3" class="step hidden terminal p-8 rounded-2xl">
+            <h2 class="text-2xl mb-8 text-center">ЗАБРОШКА OGT</h2>
+            <p class="mb-6 text-center">Возьми друзей,
+Мобилу в руки
+И прогони зачатки скуки.
+На повороте у скамьи
+Ищи ты будку — обойди!
+
+OGT OGT OGT</p>
+            <input id="pass3" class="w-full bg-black border-4 border-[#39ff14] p-6 text-3xl text-center" 
+                   placeholder="••••••" maxlength="10">
+            <button onclick="checkPassword(3, 'КОМПАС')" 
+                    class="mt-6 w-full btn-spy py-6 text-2xl">ПОДТВЕРДИТЬ</button>
+        </div>
+
+        <!-- STEP 4 -->
+        <div id="step4" class="step hidden terminal p-8 rounded-2xl">
+            <h2 class="text-2xl mb-8 text-center">СКВОРЕЧНИК</h2>
+            <p class="mb-6 text-center">О да! Мой юнный друг, теперь вам надо пройти до конца дороги. Там у тупик, перед спуском будет железная заброшка на на ношках</p>
+            <input id="pass4" class="w-full bg-black border-4 border-[#39ff14] p-6 text-3xl text-center" 
+                   placeholder="••••••" maxlength="10">
+            <button onclick="checkPassword(4, 'КЕДР')" 
+                    class="mt-6 w-full btn-spy py-6 text-2xl">ПОДТВЕРДИТЬ</button>
+        </div>
+
+        <!-- STEP 5: ARKANOID -->
+        <div id="step5" class="step hidden">
+            <h2 class="text-center text-xl mb-4 neon-text">АРКАНОИД • УНИЧТОЖЬ БЛОКИ</h2>
+            <canvas id="arkanoid" width="320" height="480" class="mx-auto border-4 border-[#39ff14] bg-black"></canvas>
+            <div class="text-center text-xs mt-4 text-[#00f0ff]">← ЗАЖМИ ЛЕВУЮ ЧАСТЬ • ПРАВУЮ ЧАСТЬ →</div>
+        </div>
+
+        <!-- STEP 6 -->
+        <div id="step6" class="step hidden terminal p-8 rounded-2xl">
+            <h2 class="text-2xl mb-8 text-center">КОРНИ-ПНИ</h2>
+            <p class="mb-6 text-center">ВВЕДИ ПАРОЛЬ С ПНЕЙ</p>
+            <input id="pass6" class="w-full bg-black border-4 border-[#39ff14] p-6 text-3xl text-center" 
+                   placeholder="••••••" maxlength="10">
+            <button onclick="checkPassword(6, 'MAYDAY')" 
+                    class="mt-6 w-full btn-spy py-6 text-2xl">ПОДТВЕРДИТЬ</button>
+        </div>
+
+        <!-- STEP 7 -->
+        <div id="step7" class="step hidden terminal p-8 rounded-2xl">
+            <h2 class="text-2xl mb-8 text-center">СТРОИМ ПЛОТ</h2>
+            <p id="hint7" class="mb-8 text-center text-[#ff00aa] text-sm hidden">ПОДСКАЗКА: Что папа пишет, когда завершает задачу?</p>
+            <input id="pass7" class="w-full bg-black border-4 border-[#39ff14] p-6 text-3xl text-center" 
+                   placeholder="••••••" maxlength="10">
+            <button onclick="checkPassword(7, 'ГОТОВО')" 
+                    class="mt-6 w-full btn-spy py-6 text-2xl">ПОДТВЕРДИТЬ</button>
+        </div>
+
+        <!-- STEP 8: SNAKE -->
+        <div id="step8" class="step hidden">
+            <h2 class="text-center text-2xl mb-4 neon-text">ЗМЕЙКА • 11 БЛОКОВ</h2>
+            <canvas id="snake" width="330" height="330" class="mx-auto border-4 border-[#39ff14] bg-black"></canvas>
+            <div class="text-center mt-6">
+                <div class="text-sm">ДЛИНА: <span id="snakeLength" class="text-3xl">1</span></div>
+            </div>
+        </div>
+
+        <!-- STEP 9: FINISH -->
+        <div id="step9" class="step hidden text-center py-12">
+            <div class="text-6xl mb-8">🎉</div>
+            <h1 class="text-5xl neon-text mb-8">С ДНЁМ РОЖДЕНИЯ,<br>МАКАР!</h1>
+            <p class="text-2xl mb-12">Тебе 11 лет!<br>Ты настоящий ШПИОН!</p>
+            <div class="terminal p-8 text-xl">
+                КЛАД ЖДЁТ ТЕБЯ В ПАЛАТКЕ У КОСТРА 🔥
+            </div>
+            <button onclick="restartGame()" 
+                    class="mt-12 w-full py-8 border-4 border-[#ff00aa] text-[#ff00aa] text-2xl">
+                    НАЧАТЬ ЗАНОВО
+            </button>
+        </div>
+    </main>
+
+    <footer class="fixed bottom-0 left-0 right-0 bg-black border-t-2 border-[#39ff14] p-3 text-center text-xs text-[#00f0ff]">
+        ОМСК • ЗЕЛЁНЫЙ ОСТРОВ • 2026
+    </footer>
+
+    <script>
+        // ==================== STATE ====================
+        let currentStep = 1;
+        let riddlesSolved = 0;
+        let puzzleSolved = false;
+        let gameMuted = false;
+        
+        const riddles = [
+            {q: "Что имеет голову, но не имеет мозг?", a: "ГВОЗДЬ"},
+            {q: "Что можно увидеть с закрытыми глазами?", a: "СОН"},
+            {q: "Что становится мокрым, когда сушит?", a: "ПОЛОТЕНЦЕ"},
+            {q: "Какой месяц имеет 28 дней?", a: "ВСЕ"},
+            {q: "Что имеет шею, но нет головы?", a: "БУТЫЛКА"},
+            {q: "Что идёт, но никогда не приходит?", a: "ВРЕМЯ"},
+            {q: "Что имеет зубы, но не ест?", a: "ГРЕБЕНЬ"},
+            {q: "Что можно разбить, не прикасаясь?", a: "МОЛЧАНИЕ"},
+            {q: "Что имеет четыре ноги, но не ходит?", a: "СТУЛ"},
+            {q: "Что тяжелее — килограмм железа или килограмм ваты?", a: "ОДИНАКОВО"},
+            {q: "Сколько лет Макару сегодня?", a: "11"}
+        ];
+
+        let currentRiddle = 0;
+        let riddleTimer;
+        let hintTimerInterval;
+
+        // Audio Context
+        let audioCtx;
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        function playSound(type) {
+            if (gameMuted || !audioCtx) return;
+            initAudio();
+            
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            if (type === "success") {
+                osc.type = "sine";
+                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                osc.frequency.linearRampToValueAtTime(1200, audioCtx.currentTime + 0.8);
+                gain.gain.value = 0.6;
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.9);
+            } 
+            else if (type === "error") {
+                osc.type = "sawtooth";
+                osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+                gain.gain.value = 0.4;
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.6);
+            } 
+            else if (type === "click") {
+                osc.type = "square";
+                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                gain.gain.value = 0.2;
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.05);
+            }
+        }
+
+        // Background noise
+        let noiseInterval;
+        function startBackgroundNoise() {
+            if (gameMuted) return;
+            noiseInterval = setInterval(() => {
+                if (Math.random() > 0.7) {
+                    const noise = audioCtx.createOscillator();
+                    noise.type = "sawtooth";
+                    noise.frequency.setValueAtTime(80 + Math.random()*40, audioCtx.currentTime);
+                    const g = audioCtx.createGain();
+                    g.gain.value = 0.03;
+                    noise.connect(g).connect(audioCtx.destination);
+                    noise.start();
+                    noise.stop(audioCtx.currentTime + 0.1 + Math.random()*0.3);
+                }
+            }, 400);
+        }
+
+        // Speech
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ru-RU';
+                utterance.rate = 0.95;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        // ==================== NAVIGATION ====================
+        function saveProgress() {
+            localStorage.setItem('makarQuestProgress', JSON.stringify({
+                currentStep,
+                riddlesSolved,
+                puzzleSolved
+            }));
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem('makarQuestProgress');
+            if (saved) {
+                const data = JSON.parse(saved);
+                currentStep = data.currentStep || 1;
+                riddlesSolved = data.riddlesSolved || 0;
+                puzzleSolved = data.puzzleSolved || false;
+            }
+            showStep(currentStep);
+        }
+
+        function showStep(step) {
+            currentStep = step;
+            document.querySelectorAll('.step').forEach(s => s.classList.add('hidden'));
+            document.getElementById(`step${step}`).classList.remove('hidden');
+            document.getElementById('stepNum').textContent = step;
+            saveProgress();
+            
+            if (step === 1 && riddlesSolved < 11) initRiddles();
+            if (step === 2) initPuzzle();
+            if (step === 5) initArkanoid();
+            if (step === 8) initSnake();
+        }
+
+        function nextStep() {
+            playSound("success");
+            if (currentStep < 9) {
+                showStep(currentStep + 1);
+            }
+        }
+
+        // ==================== STEP 1 ====================
+        function startMission() {
+            initAudio();
+            startBackgroundNoise();
+            document.getElementById('riddlesContainer').classList.remove('hidden');
+            initRiddles();
+            speak("Добро пожаловать в шпионский квест, агент Макар!");
+        }
+
+        function initRiddles() {
+            currentRiddle = riddlesSolved;
+            loadRiddle();
+        }
+
+        function loadRiddle() {
+            if (currentRiddle >= 11) {
+                nextStep();
+                return;
+            }
+            const r = riddles[currentRiddle];
+            document.getElementById('riddleNum').textContent = currentRiddle + 1;
+            document.getElementById('riddleText').textContent = r.q;
+            speak(r.q);
+            
+            // Timer 10 min
+            let timeLeft = 600;
+            document.getElementById('timer').textContent = "10:00";
+            
+            if (riddleTimer) clearInterval(riddleTimer);
+            riddleTimer = setInterval(() => {
+                timeLeft--;
+                const min = Math.floor(timeLeft / 60);
+                const sec = timeLeft % 60;
+                document.getElementById('timer').textContent = `${min}:${sec < 10 ? '0' : ''}${sec}`;
+                if (timeLeft <= 0) {
+                    clearInterval(riddleTimer);
+                }
+            }, 1000);
+        }
+
+        function checkRiddle() {
+            playSound("click");
+            const input = document.getElementById('riddleAnswer');
+            const answer = input.value.trim().toUpperCase();
+            const correct = riddles[currentRiddle].a;
+            
+            if (answer === correct) {
+                playSound("success");
+                riddlesSolved++;
+                currentRiddle++;
+                input.value = '';
+                speak("Отлично, агент!");
+                saveProgress();
+                loadRiddle();
+            } else {
+                playSound("error");
+                input.classList.add('!border-red-500');
+                setTimeout(() => input.classList.remove('!border-red-500'), 800);
+            }
+        }
+
+        function showHint() {
+            const r = riddles[currentRiddle];
+            alert("Подсказка: " + r.a[0] + " _ _ _");
+        }
+
+        // ==================== STEP 2: 15 PUZZLE ====================
+        let puzzleTiles = [];
+        const solvedState = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0];
+
+        function initPuzzle() {
+            puzzleTiles = [...solvedState];
+            shufflePuzzle();
+            renderPuzzle();
+        }
+
+        function shufflePuzzle() {
+            for (let i = puzzleTiles.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [puzzleTiles[i], puzzleTiles[j]] = [puzzleTiles[j], puzzleTiles[i]];
+            }
+            // Ensure solvable
+            if (!isSolvable(puzzleTiles)) shufflePuzzle();
+        }
+
+        function isSolvable(tiles) {
+            let inversions = 0;
+            for (let i = 0; i < tiles.length; i++) {
+                for (let j = i + 1; j < tiles.length; j++) {
+                    if (tiles[i] && tiles[j] && tiles[i] > tiles[j]) inversions++;
+                }
+            }
+            return inversions % 2 === 0;
+        }
+
+        function renderPuzzle() {
+            const container = document.getElementById('puzzle');
+            container.innerHTML = '';
+            puzzleTiles.forEach((tile, index) => {
+                const div = document.createElement('div');
+                div.className = `tile flex items-center justify-center text-4xl ${tile ? 'bg-[#111]' : 'bg-[#222]'}`;
+                div.textContent = tile || '';
+                div.onclick = () => moveTile(index);
+                container.appendChild(div);
+            });
+        }
+
+        function moveTile(index) {
+            playSound("click");
+            const emptyIndex = puzzleTiles.indexOf(0);
+            const validMoves = [emptyIndex-1, emptyIndex+1, emptyIndex-4, emptyIndex+4];
+            
+            if (validMoves.includes(index)) {
+                [puzzleTiles[index], puzzleTiles[emptyIndex]] = [puzzleTiles[emptyIndex], puzzleTiles[index]];
+                renderPuzzle();
+                
+                if (JSON.stringify(puzzleTiles) === JSON.stringify(solvedState)) {
+                    puzzleSolved = true;
+                    playSound("success");
+                    setTimeout(() => {
+                        alert("ПЯТНАШКИ ПРОЙДЕНЫ! КОД РАЗБЛОКИРОВАН.");
+                        nextStep();
+                    }, 600);
+                }
+            }
+        }
+
+        function resetPuzzle() {
+            initPuzzle();
+        }
+
+        // ==================== PASSWORD STEPS ====================
+        function checkPassword(step, correct) {
+            playSound("click");
+            const input = document.getElementById(`pass${step}`);
+            if (input.value.trim().toUpperCase() === correct) {
+                playSound("success");
+                speak("Поздравляю, агент!");
+                nextStep();
+            } else {
+                playSound("error");
+                input.style.borderColor = '#ff00aa';
+                setTimeout(() => input.style.borderColor = '#39ff14', 700);
+            }
+        }
+
+        // ==================== STEP 5: ARKANOID ====================
+        let arkanoidCanvas, aCtx, paddle, ball, blocks, score, lives, extraBalls;
+        
+        function initArkanoid() {
+            arkanoidCanvas = document.getElementById('arkanoid');
+            aCtx = arkanoidCanvas.getContext('2d');
+            
+            paddle = { x: 120, y: 440, w: 80, h: 12 };
+            resetBall();
+            
+            // Create "С ДР МАКАР" blocks
+            blocks = [];
+            const text = "С ДР МАКАР";
+            const letters = text.split('');
+            let bx = 30;
+            letters.forEach((letter, i) => {
+                if (letter === ' ') { bx += 25; return; }
+                blocks.push({
+                    x: bx,
+                    y: 60 + Math.floor(i/5)*40,
+                    w: 28,
+                    h: 22,
+                    letter: letter,
+                    alive: true
+                });
+                bx += 32;
+            });
+            
+            score = 0;
+            lives = 3;
+            extraBalls = 1;
+            
+            arkanoidCanvas.addEventListener('touchstart', handleTouch);
+            arkanoidCanvas.addEventListener('touchmove', handleTouch);
+            
+            requestAnimationFrame(arkanoidLoop);
+        }
+
+        function resetBall() {
+            ball = { x: 160, y: 300, dx: 3.5, dy: -4, r: 8 };
+        }
+
+        function handleTouch(e) {
+            e.preventDefault();
+            const rect = arkanoidCanvas.getBoundingClientRect();
+            const touchX = e.touches[0].clientX - rect.left;
+            paddle.x = touchX - paddle.w / 2;
+            if (paddle.x < 0) paddle.x = 0;
+            if (paddle.x + paddle.w > 320) paddle.x = 320 - paddle.w;
+        }
+
+        function arkanoidLoop() {
+            aCtx.fillStyle = '#000';
+            aCtx.fillRect(0, 0, 320, 480);
+            
+            // Paddle
+            aCtx.fillStyle = '#39ff14';
+            aCtx.fillRect(paddle.x, paddle.y, paddle.w, paddle.h);
+            
+            // Ball
+            aCtx.beginPath();
+            aCtx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2);
+            aCtx.fillStyle = '#00f0ff';
+            aCtx.fill();
+            
+            // Blocks
+            blocks.forEach(b => {
+                if (b.alive) {
+                    aCtx.fillStyle = b.letter === 'А' ? '#ff00aa' : '#39ff14';
+                    aCtx.fillRect(b.x, b.y, b.w, b.h);
+                    aCtx.fillStyle = '#000';
+                    aCtx.font = '14px monospace';
+                    aCtx.fillText(b.letter, b.x + 8, b.y + 16);
+                }
+            });
+            
+            // Physics
+            ball.x += ball.dx;
+            ball.y += ball.dy;
+            
+            // Wall collision
+            if (ball.x - ball.r < 0 || ball.x + ball.r > 320) ball.dx *= -1;
+            if (ball.y - ball.r < 0) ball.dy *= -1;
+            
+            // Paddle
+            if (ball.y + ball.r > paddle.y && 
+                ball.y - ball.r < paddle.y + paddle.h &&
+                ball.x > paddle.x && ball.x < paddle.x + paddle.w) {
+                ball.dy *= -1;
+                playSound("click");
+            }
+            
+            // Blocks
+            blocks.forEach(b => {
+                if (!b.alive) return;
+                if (ball.x + ball.r > b.x && ball.x - ball.r < b.x + b.w &&
+                    ball.y + ball.r > b.y && ball.y - ball.r < b.y + b.h) {
+                    b.alive = false;
+                    ball.dy *= -1;
+                    playSound("success");
+                    
+                    if (b.letter === 'А') {
+                        extraBalls = 3;
+                    }
+                    
+                    score++;
+                }
+            });
+            
+            // Bottom
+            if (ball.y > 480) {
+                lives--;
+                if (lives > 0) {
+                    resetBall();
+                } else {
+                    // Reset blocks
+                    blocks.forEach(b => b.alive = true);
+                    lives = 3;
+                    resetBall();
+                }
+            }
+            
+            // Win condition
+            if (blocks.every(b => !b.alive)) {
+                playSound("success");
+                setTimeout(() => {
+                    alert("МИССИЯ ВЫПОЛНЕНА! С ДР, МАКАР!");
+                    nextStep();
+                }, 400);
+                return;
+            }
+            
+            requestAnimationFrame(arkanoidLoop);
+        }
+
+        // ==================== STEP 8: SNAKE ====================
+        let snakeCanvas, sCtx, snake, food, dx, dy, gameInterval, snakeScore;
+        
+        function initSnake() {
+            snakeCanvas = document.getElementById('snake');
+            sCtx = snakeCanvas.getContext('2d');
+            const grid = 30;
+            
+            snake = [{x: 5, y: 5}];
+            dx = 1; dy = 0;
+            snakeScore = 1;
+            placeFood();
+            
+            document.addEventListener('keydown', snakeControl);
+            
+            if (gameInterval) clearInterval(gameInterval);
+            gameInterval = setInterval(() => {
+                updateSnake();
+            }, 140);
+            
+            drawSnake();
+        }
+
+        function placeFood() {
+            food = {
+                x: Math.floor(Math.random() * 11),
+                y: Math.floor(Math.random() * 11)
+            };
+        }
+
+        function updateSnake() {
+            const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+            
+            // Wall
+            if (head.x < 0 || head.x >= 11 || head.y < 0 || head.y >= 11) {
+                gameOverSnake();
+                return;
+            }
+            
+            // Self
+            if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
+                gameOverSnake();
+                return;
+            }
+            
+            snake.unshift(head);
+            
+            if (head.x === food.x && head.y === food.y) {
+                snakeScore++;
+                document.getElementById('snakeLength').textContent = snakeScore;
+                placeFood();
+                playSound("click");
+                
+                if (snakeScore >= 11) {
+                    clearInterval(gameInterval);
+                    winSnake();
+                }
+            } else {
+                snake.pop();
+            }
+            
+            drawSnake();
+        }
+
+        function drawSnake() {
+            sCtx.fillStyle = '#000';
+            sCtx.fillRect(0, 0, 330, 330);
+            
+            // Grid
+            sCtx.strokeStyle = '#111';
+            for (let i = 0; i <= 11; i++) {
+                sCtx.beginPath();
+                sCtx.moveTo(i*30, 0);
+                sCtx.lineTo(i*30, 330);
+                sCtx.stroke();
+                sCtx.beginPath();
+                sCtx.moveTo(0, i*30);
+                sCtx.lineTo(330, i*30);
+                sCtx.stroke();
+            }
+            
+            // Snake
+            snake.forEach((seg, i) => {
+                sCtx.fillStyle = i === 0 ? '#ff00aa' : '#39ff14';
+                sCtx.fillRect(seg.x * 30 + 2, seg.y * 30 + 2, 26, 26);
+            });
+            
+            // Food
+            sCtx.fillStyle = '#00f0ff';
+            sCtx.fillRect(food.x * 30 + 6, food.y * 30 + 6, 18, 18);
+        }
+
+        function snakeControl(e) {
+            switch(e.key) {
+                case 'ArrowLeft': if (dx !== 1) {dx = -1; dy = 0;} break;
+                case 'ArrowRight': if (dx !== -1) {dx = 1; dy = 0;} break;
+                case 'ArrowUp': if (dy !== 1) {dx = 0; dy = -1;} break;
+                case 'ArrowDown': if (dy !== -1) {dx = 0; dy = 1;} break;
+            }
+        }
+
+        function gameOverSnake() {
+            clearInterval(gameInterval);
+            playSound("error");
+            alert("ЗМЕЙКА СБИЛАСЬ С КУРСА. ПОПРОБУЙ ЕЩЁ РАЗ!");
+            initSnake();
+        }
+
+        function winSnake() {
+            playSound("success");
+            speak("Превосходно, шпион Макар!");
+            setTimeout(() => nextStep(), 800);
+        }
+
+        // ==================== UTILS ====================
+        function toggleMute() {
+            gameMuted = !gameMuted;
+            document.getElementById('muteBtn').textContent = gameMuted ? '🔇' : '🔊';
+            if (!gameMuted && currentStep >= 1) startBackgroundNoise();
+        }
+
+        function restartGame() {
+            localStorage.removeItem('makarQuestProgress');
+            location.reload();
+        }
+
+        // Init
+        window.onload = () => {
+            loadProgress();
+            
+            // Tailwind script already included
+            console.log('%cШПИОНСКИЙ КВЕСТ ЗАГРУЖЕН', 'color:#39ff14; font-family:monospace');
+        };
+    </script>
+</body>
+</html>
