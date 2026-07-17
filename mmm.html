@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ОПЕРАЦИЯ «ЗЕЛЁНЫЙ ОСТРОВ» • Макару 11</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
+        
+        :root {
+            --neon-green: #39ff14;
+            --neon-blue: #00f0ff;
+            --neon-pink: #ff00aa;
+        }
+        
+        body {
+            font-family: 'Press Start 2P', system-ui;
+            background: #0a0a0a;
+            color: #00ff9d;
+            overflow-x: hidden;
+        }
+        
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent 50%, rgba(0, 255, 100, 0.03) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 9999;
+            animation: scan 4s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        
+        .neon-text {
+            text-shadow: 
+                0 0 5px var(--neon-green),
+                0 0 10px var(--neon-green),
+                0 0 20px var(--neon-green);
+        }
+        
+        .terminal {
+            background: rgba(0, 20, 0, 0.95);
+            border: 2px solid #00ff9d;
+            box-shadow: 0 0 20px #00ff9d;
+        }
+        
+        button {
+            transition: all 0.1s;
+        }
+        
+        button:active {
+            transform: scale(0.95);
+        }
+        
+        .tile {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: #1a1a1a;
+            border: 3px solid #00ff9d;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .game-container {
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-20">
+    <div class="scanline"></div>
+    
+    <!-- HEADER -->
+    <div class="fixed top-0 left-0 right-0 bg-black border-b-2 border-[#00ff9d] z-50">
+        <div class="max-w-md mx-auto flex items-center justify-between px-4 py-3">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-user-secret text-[#39ff14] text-2xl"></i>
+                <div>
+                    <div class="text-xs text-[#00f0ff]">АГЕНТ</div>
+                    <div class="text-lg font-bold neon-text">МАКАР-11</div>
+                </div>
+            </div>
+            <div onclick="toggleMute()" id="sound-btn"
+                 class="w-10 h-10 flex items-center justify-center border border-[#00ff9d] rounded-full cursor-pointer hover:bg-[#00ff9d]/10">
+                <i class="fas fa-volume-up text-[#39ff14]"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-md mx-auto pt-16 px-4">
+        
+        <!-- MAIN SCREEN -->
+        <div id="screen-start" class="screen">
+            <div class="terminal p-8 rounded-2xl mt-12 text-center">
+                <div class="text-6xl mb-6">🔍</div>
+                <h1 class="text-3xl neon-text mb-4">ОПЕРАЦИЯ<br>«ЗЕЛЁНЫЙ ОСТРОВ»</h1>
+                <p class="text-[#00f0ff] mb-8">Шпионский квест<br>для Макара</p>
+                <button onclick="startQuest()" 
+                        class="w-full py-6 text-2xl bg-black border-4 border-[#39ff14] hover:bg-[#39ff14] hover:text-black rounded-xl font-bold">
+                    НАЧАТЬ МИССИЮ
+                </button>
+                <div class="mt-6 text-xs text-gray-500">Парк «Зелёный остров», Омск • 2026</div>
+            </div>
+        </div>
+
+        <!-- STEP 1: RIDDLES -->
+        <div id="screen-riddles" class="screen hidden">
+            <div class="terminal p-6 rounded-2xl">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="text-sm">ЗАГАДКА <span id="riddle-counter" class="text-[#39ff14]">1/11</span></div>
+                    <div onclick="repeatSpeech()" class="cursor-pointer text-2xl">🔊</div>
+                </div>
+                
+                <div id="riddle-text" class="text-lg leading-relaxed min-h-[180px] mb-8"></div>
+                
+                <div class="mb-4">
+                    <input id="riddle-input" 
+                           class="w-full bg-black border-2 border-[#00ff9d] p-4 text-xl text-center rounded-xl focus:outline-none"
+                           placeholder="ВВЕДИ ОТВЕТ"
+                           onkeypress="if(event.key==='Enter') checkRiddle()">
+                </div>
+                
+                <div class="flex gap-3">
+                    <button onclick="checkRiddle()" 
+                            class="flex-1 py-4 bg-[#39ff14] text-black font-bold rounded-xl">ПРОВЕРИТЬ</button>
+                    <button onclick="giveHint()" 
+                            id="hint-btn"
+                            class="flex-1 py-4 border border-yellow-400 text-yellow-400 rounded-xl">ПОДСКАЗКА (10:00)</button>
+                </div>
+                
+                <div id="riddle-timer" class="text-center mt-4 text-sm text-yellow-400"></div>
+            </div>
+        </div>
+
+        <!-- STEP 2: 15 PUZZLE -->
+        <div id="screen-puzzle" class="screen hidden">
+            <div class="terminal p-6 rounded-2xl">
+                <div class="text-center mb-4">
+                    <div class="text-[#39ff14]">ПЯТНАШКИ • СЕКРЕТНЫЙ КОД</div>
+                </div>
+                <div id="puzzle-grid" class="grid grid-cols-4 gap-2 mx-auto" style="width: fit-content;"></div>
+                <button onclick="resetPuzzle()" 
+                        class="mt-6 w-full py-3 border border-gray-400 text-gray-400 rounded-xl">ПЕРЕМЕШАТЬ</button>
+            </div>
+        </div>
+
+        <!-- STEP 3: COMPASS -->
+        <div id="screen-compass" class="screen hidden">
+            <div class="terminal p-8 rounded-2xl text-center">
+                <div class="text-5xl mb-6">🧭</div>
+                <h2 class="text-2xl mb-6">ЗДАНИЕ OGT</h2>
+                <input id="compass-input" placeholder="ВВЕДИ КОД" 
+                       class="w-full bg-black border-2 border-[#00ff9d] p-6 text-2xl text-center rounded-2xl mb-6">
+                <button onclick="checkCompass()" 
+                        class="w-full py-6 bg-[#39ff14] text-black text-xl font-bold rounded-2xl">ПОДТВЕРДИТЬ</button>
+            </div>
+        </div>
+
+        <!-- STEP 4: KEDR -->
+        <div id="screen-kedr" class="screen hidden">
+            <div class="terminal p-8 rounded-2xl text-center">
+                <div class="text-5xl mb-6">🪵</div>
+                <h2 class="text-2xl mb-6">Скворечник</h2>
+                <p class="mb-8 text-sm">Посмотри на дно</p>
+                <input id="kedr-input" placeholder="КОД НА ДНЕ" 
+                       class="w-full bg-black border-2 border-[#00ff9d] p-6 text-2xl text-center rounded-2xl mb-6">
+                <button onclick="checkKedr()" 
+                        class="w-full py-6 bg-[#39ff14] text-black text-xl font-bold rounded-2xl">ПОДТВЕРДИТЬ</button>
+            </div>
+        </div>
+
+        <!-- STEP 5: ARKANOID -->
+        <div id="screen-arkanoid" class="screen hidden">
+            <div class="terminal p-4 rounded-2xl">
+                <canvas id="arkanoid-canvas" width="360" height="480" class="mx-auto bg-black rounded-xl"></canvas>
+                <div class="flex justify-center gap-8 mt-4">
+                    <button onclick="movePaddle(-1)" class="w-20 h-20 bg-black border-4 border-[#00f0ff] rounded-2xl text-4xl">←</button>
+                    <button onclick="movePaddle(1)" class="w-20 h-20 bg-black border-4 border-[#00f0ff] rounded-2xl text-4xl">→</button>
+                </div>
+                <div class="text-center mt-4 text-xs">Уничтожь все блоки!</div>
+            </div>
+        </div>
+
+        <!-- STEP 6: MAYDAY -->
+        <div id="screen-mayday" class="screen hidden">
+            <div class="terminal p-8 rounded-2xl text-center">
+                <div class="text-5xl mb-6">🌲</div>
+                <h2 class="text-2xl mb-6">Корни-пни</h2>
+                <input id="mayday-input" placeholder="КОД" 
+                       class="w-full bg-black border-2 border-[#00ff9d] p-6 text-2xl text-center rounded-2xl mb-6">
+                <button onclick="checkMayday()" 
+                        class="w-full py-6 bg-[#39ff14] text-black text-xl font-bold rounded-2xl">ПОДТВЕРДИТЬ</button>
+            </div>
+        </div>
+
+        <!-- STEP 7: GOTOVO -->
+        <div id="screen-gotovo" class="screen hidden">
+            <div class="terminal p-8 rounded-2xl text-center">
+                <div class="text-5xl mb-6">🏗️</div>
+                <h2 class="text-2xl mb-6">ПЛОТ ГОТОВ?</h2>
+                <div id="gotovo-hint" class="hidden text-yellow-400 mb-6 text-sm">Подсказка: Что папа пишет на работе когда завершает задачи?</div>
+                <input id="gotovo-input" placeholder="КОД" 
+                       class="w-full bg-black border-2 border-[#00ff9d] p-6 text-2xl text-center rounded-2xl mb-6">
+                <button onclick="checkGotovo()" 
+                        class="w-full py-6 bg-[#39ff14] text-black text-xl font-bold rounded-2xl">ПОДТВЕРДИТЬ</button>
+            </div>
+        </div>
+
+        <!-- STEP 8: SNAKE -->
+        <div id="screen-snake" class="screen hidden">
+            <div class="terminal p-4 rounded-2xl">
+                <canvas id="snake-canvas" width="330" height="330" class="mx-auto bg-black rounded-xl"></canvas>
+                <div class="flex justify-center gap-3 mt-6">
+                    <button onclick="changeSnakeDir(0,-1)" class="w-16 h-16 bg-black border-4 border-[#ff00aa] rounded-2xl text-3xl">↑</button>
+                </div>
+                <div class="flex justify-center gap-3">
+                    <button onclick="changeSnakeDir(-1,0)" class="w-16 h-16 bg-black border-4 border-[#ff00aa] rounded-2xl text-3xl">←</button>
+                    <button onclick="changeSnakeDir(1,0)" class="w-16 h-16 bg-black border-4 border-[#ff00aa] rounded-2xl text-3xl">→</button>
+                </div>
+                <div class="flex justify-center gap-3">
+                    <button onclick="changeSnakeDir(0,1)" class="w-16 h-16 bg-black border-4 border-[#ff00aa] rounded-2xl text-3xl">↓</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 9: FINALE -->
+        <div id="screen-finale" class="screen hidden">
+            <div class="terminal p-8 rounded-2xl text-center min-h-[70vh] flex flex-col items-center justify-center">
+                <div class="text-8xl mb-8 animate-bounce">🎉</div>
+                <h1 class="text-4xl neon-text mb-4">С ДНЁМ РОЖДЕНИЯ!</h1>
+                <h2 class="text-5xl text-[#39ff14] mb-12">МАКАР 11!</h2>
+                <p class="text-xl mb-12">Ты — лучший агент!<br>Клад спрятан в палатке у костра.</p>
+                <button onclick="restartQuest()" 
+                        class="py-6 px-12 bg-black border-4 border-[#39ff14] text-2xl rounded-2xl">ЕЩЁ РАЗ?</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROGRESS BAR -->
+    <div class="fixed bottom-0 left-0 right-0 bg-black border-t border-[#00ff9d] p-3 max-w-md mx-auto">
+        <div class="flex justify-between text-xs mb-2 px-2">
+            <div>ПРОГРЕСС</div>
+            <div id="progress-text">0/9</div>
+        </div>
+        <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+            <div id="progress-bar" class="h-full w-0 bg-gradient-to-r from-[#39ff14] to-[#00f0ff]"></div>
+        </div>
+    </div>
+
+    <script>
+        // =============== STATE & SAVE ===============
+        let currentStep = 0;
+        let progress = 0;
+        let isMuted = false;
+        let audioContext;
+        
+        const riddles = [
+            {q: "Что имеет голову, но не имеет мозгов?", a: "булавка"},
+            {q: "Что можно увидеть с закрытыми глазами?", a: "сон"},
+            {q: "Что идёт, но никогда не приходит?", a: "время"},
+            {q: "Какой месяц имеет 28 дней?", a: "все"},
+            {q: "Что становится мокрым когда сушит?", a: "полотенце"},
+            {q: "Что имеет клюв, но не птица?", a: "чайник"},
+            {q: "Что можно разбить, не дотрагиваясь?", a: "обещание"},
+            {q: "Что имеет шею, но нет головы?", a: "бутылка"},
+            {q: "Что имеет зубы, но не кусается?", a: "расчёска"},
+            {q: "Что можно сломать, даже не касаясь?", a: "тишину"},
+            {q: "Что растёт вниз?", a: "сосулька"}
+        ];
+
+        let currentRiddle = 0;
+        let riddleTimer;
+        let remainingTime = 600;
+
+        // =============== AUDIO ===============
+        function initAudio() {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        function playClick() {
+            if (isMuted || !audioContext) return;
+            const osc = audioContext.createOscillator();
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(800, audioContext.currentTime);
+            const gain = audioContext.createGain();
+            gain.gain.value = 0.1;
+            osc.connect(gain).connect(audioContext.destination);
+            osc.start();
+            osc.stop(audioContext.currentTime + 0.05);
+        }
+
+        function playSuccess() {
+            if (isMuted || !audioContext) return;
+            const notes = [800, 1000, 1200, 1500];
+            notes.forEach((freq, i) => {
+                setTimeout(() => {
+                    const osc = audioContext.createOscillator();
+                    osc.frequency.value = freq;
+                    const gain = audioContext.createGain();
+                    gain.gain.value = 0.3;
+                    osc.connect(gain).connect(audioContext.destination);
+                    osc.start();
+                    osc.stop(audioContext.currentTime + 0.2);
+                }, i * 80);
+            });
+        }
+
+        function playError() {
+            if (isMuted || !audioContext) return;
+            const osc = audioContext.createOscillator();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(120, audioContext.currentTime);
+            const gain = audioContext.createGain();
+            gain.gain.setValueAtTime(0.4, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.8);
+            osc.connect(gain).connect(audioContext.destination);
+            osc.start();
+            osc.stop(audioContext.currentTime + 0.8);
+        }
+
+        function playGeiger() {
+            if (isMuted || !audioContext) return;
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    const osc = audioContext.createOscillator();
+                    osc.type = 'sawtooth';
+                    osc.frequency.value = 300 + Math.random() * 800;
+                    const gain = audioContext.createGain();
+                    gain.gain.value = 0.05;
+                    osc.connect(gain).connect(audioContext.destination);
+                    osc.start();
+                    osc.stop(audioContext.currentTime + 0.03);
+                }
+            }, 400);
+        }
+
+        let speechSynth;
+        function speak(text) {
+            if (!speechSynth) speechSynth = window.speechSynthesis;
+            if (isMuted) return;
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'ru-RU';
+            utterance.rate = 0.95;
+            utterance.pitch = 1.1;
+            speechSynth.speak(utterance);
+        }
+
+        function repeatSpeech() {
+            playClick();
+            if (currentStep === 1) {
+                speak(riddles[currentRiddle].q);
+            }
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            const icon = document.getElementById('sound-btn').querySelector('i');
+            icon.classList.toggle('fa-volume-up', !isMuted);
+            icon.classList.toggle('fa-volume-mute', isMuted);
+        }
+
+        // =============== SAVE / LOAD ===============
+        function saveProgress() {
+            localStorage.setItem('makarQuestProgress', JSON.stringify({
+                currentStep: currentStep,
+                currentRiddle: currentRiddle
+            }));
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem('makarQuestProgress');
+            if (saved) {
+                const data = JSON.parse(saved);
+                currentStep = data.currentStep || 0;
+                currentRiddle = data.currentRiddle || 0;
+                if (currentStep > 0) showStep(currentStep);
+            }
+        }
+
+        // =============== NAVIGATION ===============
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function updateProgress() {
+            progress = Math.max(0, Math.min(100, Math.floor((currentStep / 9) * 100)));
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('progress-text').textContent = `${currentStep}/9`;
+        }
+
+        function showStep(step) {
+            currentStep = step;
+            saveProgress();
+            updateProgress();
+            
+            if (step === 1) {
+                showScreen('screen-riddles');
+                loadRiddle();
+            } else if (step === 2) {
+                showScreen('screen-puzzle');
+                initPuzzle();
+            } else if (step === 3) {
+                showScreen('screen-compass');
+            } else if (step === 4) {
+                showScreen('screen-kedr');
+            } else if (step === 5) {
+                showScreen('screen-arkanoid');
+                initArkanoid();
+            } else if (step === 6) {
+                showScreen('screen-mayday');
+            } else if (step === 7) {
+                showScreen('screen-gotovo');
+            } else if (step === 8) {
+                showScreen('screen-snake');
+                initSnake();
+            } else if (step === 9) {
+                showScreen('screen-finale');
+                speak("Поздравляю, Макар! Ты настоящий шпион! Клад в палатке у костра.");
+            }
+        }
+
+        function startQuest() {
+            playSuccess();
+            speak("Привет, агент Макар! Добро пожаловать на секретную миссию.");
+            setTimeout(() => {
+                showStep(1);
+            }, 800);
+        }
+
+        // =============== RIDDLES ===============
+        function loadRiddle() {
+            const riddle = riddles[currentRiddle];
+            document.getElementById('riddle-text').textContent = riddle.q;
+            document.getElementById('riddle-counter').textContent = `${currentRiddle + 1}/11`;
+            document.getElementById('riddle-input').value = '';
+            
+            speak(riddle.q);
+            
+            // Timer
+            remainingTime = 600;
+            clearInterval(riddleTimer);
+            riddleTimer = setInterval(() => {
+                remainingTime--;
+                const min = Math.floor(remainingTime / 60);
+                const sec = remainingTime % 60;
+                document.getElementById('riddle-timer').textContent = 
+                    `Подсказка через: ${min}:${sec < 10 ? '0' : ''}${sec}`;
+                
+                if (remainingTime <= 0) {
+                    clearInterval(riddleTimer);
+                    document.getElementById('hint-btn').textContent = "ПОДСКАЗКА";
+                }
+            }, 1000);
+        }
+
+        function checkRiddle() {
+            playClick();
+            const input = document.getElementById('riddle-input').value.trim().toLowerCase();
+            const correct = riddles[currentRiddle].a.toLowerCase();
+            
+            if (input === correct || input.includes(correct)) {
+                playSuccess();
+                speak("Отлично! Правильно.");
+                currentRiddle++;
+                
+                if (currentRiddle >= riddles.length) {
+                    setTimeout(() => showStep(2), 1200);
+                } else {
+                    setTimeout(() => loadRiddle(), 800);
+                }
+            } else {
+                playError();
+                speak("Не совсем. Попробуй ещё.");
+            }
+        }
+
+        function giveHint() {
+            playClick();
+            const hints = ["Первая буква...", "Длина слова...", "Похоже на..."];
+            speak(hints[Math.floor(Math.random() * hints.length)]);
+        }
+
+        // =============== 15 PUZZLE ===============
+        let puzzleTiles = [];
+        function initPuzzle() {
+            puzzleTiles = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0];
+            // Make sure it's solvable
+            shufflePuzzle();
+            renderPuzzle();
+        }
+
+        function shufflePuzzle() {
+            // Fisher-Yates + ensure solvability
+            do {
+                for (let i = puzzleTiles.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [puzzleTiles[i], puzzleTiles[j]] = [puzzleTiles[j], puzzleTiles[i]];
+                }
+            } while (!isSolvable(puzzleTiles));
+        }
+
+        function isSolvable(tiles) {
+            let inversions = 0;
+            for (let i = 0; i < 16; i++) {
+                if (tiles[i] === 0) continue;
+                for (let j = i + 1; j < 16; j++) {
+                    if (tiles[j] === 0) continue;
+                    if (tiles[i] > tiles[j]) inversions++;
+                }
+            }
+            return inversions % 2 === 0;
+        }
+
+        function renderPuzzle() {
+            const grid = document.getElementById('puzzle-grid');
+            grid.innerHTML = '';
+            puzzleTiles.forEach((num, i) => {
+                const tile = document.createElement('div');
+                tile.className = `tile ${num === 0 ? 'opacity-0' : ''}`;
+                tile.textContent = num || '';
+                tile.onclick = () => moveTile(i);
+                grid.appendChild(tile);
+            });
+        }
+
+        function moveTile(index) {
+            playClick();
+            const emptyIndex = puzzleTiles.indexOf(0);
+            const rowDiff = Math.floor(index / 4) - Math.floor(emptyIndex / 4);
+            const colDiff = (index % 4) - (emptyIndex % 4);
+            
+            if (Math.abs(rowDiff) + Math.abs(colDiff) === 1) {
+                [puzzleTiles[index], puzzleTiles[emptyIndex]] = [puzzleTiles[emptyIndex], puzzleTiles[index]];
+                renderPuzzle();
+                
+                if (isSolved()) {
+                    playSuccess();
+                    speak("Отличная работа! Код разблокирован.");
+                    setTimeout(() => showStep(3), 1500);
+                }
+            }
+        }
+
+        function isSolved() {
+            for (let i = 0; i < 15; i++) {
+                if (puzzleTiles[i] !== i + 1) return false;
+            }
+            return puzzleTiles[15] === 0;
+        }
+
+        function resetPuzzle() {
+            initPuzzle();
+        }
+
+        // =============== ARKANOID ===============
+        let arkanoid = {
+            paddleX: 150,
+            paddleW: 80,
+            ballX: 180,
+            ballY: 300,
+            ballDX: 3,
+            ballDY: -4,
+            blocks: [],
+            lives: 3,
+            score: 0
+        };
+
+        function initArkanoid() {
+            const canvas = document.getElementById('arkanoid-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Create blocks "С ДР МАКАР"
+            arkanoid.blocks = [];
+            const text = "С ДР МАКАР";
+            let x = 30;
+            for (let i = 0; i < text.length; i++) {
+                if (text[i] === ' ') { x += 30; continue; }
+                arkanoid.blocks.push({
+                    x: x,
+                    y: 60 + Math.floor(i / 5) * 40,
+                    w: 28,
+                    h: 22,
+                    letter: text[i],
+                    active: true
+                });
+                x += 32;
+            }
+            
+            arkanoid.paddleX = 140;
+            arkanoid.ballX = 180;
+            arkanoid.ballY = 300;
+            arkanoid.ballDX = 3.5;
+            arkanoid.ballDY = -4.5;
+            
+            function gameLoop() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Paddle
+                ctx.fillStyle = '#00f0ff';
+                ctx.fillRect(arkanoid.paddleX, 440, arkanoid.paddleW, 16);
+                
+                // Ball
+                ctx.fillStyle = '#39ff14';
+                ctx.beginPath();
+                ctx.arc(arkanoid.ballX, arkanoid.ballY, 9, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Blocks
+                let remaining = 0;
+                arkanoid.blocks.forEach(b => {
+                    if (!b.active) return;
+                    remaining++;
+                    ctx.fillStyle = b.letter === 'А' ? '#ff00aa' : '#39ff14';
+                    ctx.fillRect(b.x, b.y, b.w, b.h);
+                    ctx.fillStyle = '#000';
+                    ctx.font = 'bold 14px monospace';
+                    ctx.fillText(b.letter, b.x + 8, b.y + 16);
+                });
+                
+                // Collisions
+                if (arkanoid.ballX - 9 < 0 || arkanoid.ballX + 9 > canvas.width) arkanoid.ballDX *= -1;
+                if (arkanoid.ballY - 9 < 0) arkanoid.ballDY *= -1;
+                
+                // Paddle hit
+                if (arkanoid.ballY + 9 > 440 && arkanoid.ballY - 9 < 456 &&
+                    arkanoid.ballX > arkanoid.paddleX && arkanoid.ballX < arkanoid.paddleX + arkanoid.paddleW) {
+                    arkanoid.ballDY *= -1;
+                    arkanoid.ballDX += (arkanoid.ballX - (arkanoid.paddleX + arkanoid.paddleW/2)) / 10;
+                }
+                
+                // Block hit
+                arkanoid.blocks.forEach(b => {
+                    if (!b.active) return;
+                    if (arkanoid.ballX > b.x && arkanoid.ballX < b.x + b.w &&
+                        arkanoid.ballY > b.y && arkanoid.ballY < b.y + b.h) {
+                        b.active = false;
+                        arkanoid.ballDY *= -1;
+                        playSuccess();
+                        
+                        if (b.letter === 'А') {
+                            // Extra ball effect simulation
+                            speak("Дополнительный мяч!");
+                        }
+                    }
+                });
+                
+                // Fall
+                if (arkanoid.ballY > canvas.height + 20) {
+                    playError();
+                    arkanoid.ballX = 180;
+                    arkanoid.ballY = 300;
+                    arkanoid.ballDY = -4.5;
+                    // Restore some blocks
+                    arkanoid.blocks.forEach(b => {
+                        if (Math.random() > 0.6) b.active = true;
+                    });
+                }
+                
+                arkanoid.ballX += arkanoid.ballDX;
+                arkanoid.ballY += arkanoid.ballDY;
+                
+                // Win condition
+                if (remaining === 0) {
+                    playSuccess();
+                    speak("Поздравляю! Миссия выполнена.");
+                    setTimeout(() => showStep(6), 1200);
+                    return;
+                }
+                
+                requestAnimationFrame(gameLoop);
+            }
+            
+            gameLoop();
+        }
+
+        window.movePaddle = function(dir) {
+            arkanoid.paddleX += dir * 25;
+            if (arkanoid.paddleX < 0) arkanoid.paddleX = 0;
+            if (arkanoid.paddleX > 360 - arkanoid.paddleW) arkanoid.paddleX = 360 - arkanoid.paddleW;
+        };
+
+        // =============== SNAKE ===============
+        let snakeInterval;
+        let snake = {
+            body: [{x:5,y:5}],
+            dir: {x:1, y:0},
+            food: {x:8,y:8},
+            size: 11,
+            lengthGoal: 11
+        };
+
+        function initSnake() {
+            snake.body = [{x:5,y:5}];
+            snake.dir = {x:1,y:0};
+            snake.food = {x: Math.floor(Math.random()*11), y: Math.floor(Math.random()*11)};
+            
+            const canvas = document.getElementById('snake-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            clearInterval(snakeInterval);
+            
+            snakeInterval = setInterval(() => {
+                // Move
+                const head = {x: snake.body[0].x + snake.dir.x, y: snake.body[0].y + snake.dir.y};
+                
+                // Wall
+                if (head.x < 0 || head.x >= snake.size || head.y < 0 || head.y >= snake.size) {
+                    gameOverSnake();
+                    return;
+                }
+                
+                // Self
+                if (snake.body.some(s => s.x === head.x && s.y === head.y)) {
+                    gameOverSnake();
+                    return;
+                }
+                
+                snake.body.unshift(head);
+                
+                // Eat
+                if (head.x === snake.food.x && head.y === snake.food.y) {
+                    snake.food = {x: Math.floor(Math.random()*snake.size), y: Math.floor(Math.random()*snake.size)};
+                    playSuccess();
+                } else {
+                    snake.body.pop();
+                }
+                
+                // Draw
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const cell = canvas.width / snake.size;
+                
+                // Snake
+                ctx.fillStyle = '#39ff14';
+                snake.body.forEach((part, i) => {
+                    ctx.fillRect(part.x * cell + 2, part.y * cell + 2, cell - 4, cell - 4);
+                });
+                
+                // Food
+                ctx.fillStyle = '#ff00aa';
+                ctx.fillRect(snake.food.x * cell + 4, snake.food.y * cell + 4, cell - 8, cell - 8);
+                
+                if (snake.body.length >= snake.lengthGoal) {
+                    clearInterval(snakeInterval);
+                    playSuccess();
+                    speak("Великолепно! Ты собрал змейку.");
+                    setTimeout(() => showStep(9), 1400);
+                }
+            }, 180);
+        }
+
+        function changeSnakeDir(dx, dy) {
+            playClick();
+            // Prevent opposite direction
+            if (snake.dir.x === -dx && snake.dir.y === -dy) return;
+            snake.dir = {x: dx, y: dy};
+        }
+
+        function gameOverSnake() {
+            clearInterval(snakeInterval);
+            playError();
+            speak("Миссия провалена. Попробуй ещё раз.");
+            setTimeout(initSnake, 1200);
+        }
+
+        // =============== PASSWORD CHECKS ===============
+        function checkCompass() {
+            playClick();
+            const val = document.getElementById('compass-input').value.trim().toUpperCase().replace(/\s/g, '');
+            if (val === 'КОМПАС') {
+                playSuccess();
+                speak("Верно!");
+                showStep(4);
+            } else {
+                playError();
+            }
+        }
+
+        function checkKedr() {
+            playClick();
+            const val = document.getElementById('kedr-input').value.trim().toUpperCase().replace(/\s/g, '');
+            if (val === 'КЕДР') {
+                playSuccess();
+                speak("Отлично!");
+                showStep(5);
+            } else {
+                playError();
+            }
+        }
+
+        function checkMayday() {
+            playClick();
+            const val = document.getElementById('mayday-input').value.trim().toUpperCase().replace(/\s/g, '');
+            if (val === 'MAYDAY') {
+                playSuccess();
+                speak("Правильно!");
+                showStep(7);
+            } else {
+                playError();
+            }
+        }
+
+        function checkGotovo() {
+            playClick();
+            const val = document.getElementById('gotovo-input').value.trim().toUpperCase().replace(/\s/g, '');
+            if (val === 'ГОТОВО') {
+                playSuccess();
+                speak("Молодец! Плот готов.");
+                showStep(8);
+            } else {
+                playError();
+            }
+        }
+
+        function restartQuest() {
+            localStorage.removeItem('makarQuestProgress');
+            location.reload();
+        }
+
+        // =============== START ===============
+        window.onload = function() {
+            initAudio();
+            playGeiger();
+            
+            loadProgress();
+            if (currentStep === 0) {
+                showScreen('screen-start');
+            } else {
+                showStep(currentStep);
+            }
+            
+            // Tailwind script already loaded
+            console.log('%cШпионский квест Макара загружен!', 'color:#39ff14; font-size:14px');
+        };
+    </script>
+</body>
+</html>
