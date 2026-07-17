@@ -424,14 +424,42 @@ OGT OGT OGT</p>
             alert("Подсказка: " + r.a[0] + " _ _ _");
         }
 
-// ==================== STEP 2: 15-PUZZLE (ИСПРАВЛЕНО) ====================
+// ==================== STEP 2: 15-PUZZLE (с таймером пропуска) ====================
 let puzzleTiles = [];
+let puzzleTimer;
 const solvedState = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0];
 
 function initPuzzle() {
     puzzleTiles = [...solvedState];
     shufflePuzzle();
     renderPuzzle();
+    
+    // Таймер на пропуск (10 минут)
+    let timeLeft = 600; // 10 минут
+    const timerEl = document.createElement('div');
+    timerEl.id = 'puzzleSkipTimer';
+    timerEl.className = 'text-center mt-6 text-[#ff00aa] text-sm';
+    timerEl.innerHTML = `Можно пропустить через <span id="puzzleTime">10:00</span>`;
+    
+    const puzzleContainer = document.getElementById('step2');
+    const oldTimer = document.getElementById('puzzleSkipTimer');
+    if (oldTimer) oldTimer.remove();
+    puzzleContainer.appendChild(timerEl);
+
+    if (puzzleTimer) clearInterval(puzzleTimer);
+    
+    puzzleTimer = setInterval(() => {
+        timeLeft--;
+        const min = Math.floor(timeLeft / 60);
+        const sec = timeLeft % 60;
+        const display = document.getElementById('puzzleTime');
+        if (display) display.textContent = `${min}:${sec < 10 ? '0' : ''}${sec}`;
+        
+        if (timeLeft <= 0) {
+            clearInterval(puzzleTimer);
+            showSkipButton();
+        }
+    }, 1000);
 }
 
 function shufflePuzzle() {
@@ -443,89 +471,69 @@ function shufflePuzzle() {
     } while (!isSolvable(puzzleTiles));
 }
 
-// Правильная проверка решаемости для 4x4
 function isSolvable(tiles) {
     let inversions = 0;
     let blankRow = 0;
-    
     for (let i = 0; i < tiles.length; i++) {
         if (tiles[i] === 0) {
             blankRow = Math.floor(i / 4);
             continue;
         }
         for (let j = i + 1; j < tiles.length; j++) {
-            if (tiles[j] !== 0 && tiles[i] > tiles[j]) {
-                inversions++;
-            }
+            if (tiles[j] !== 0 && tiles[i] > tiles[j]) inversions++;
         }
     }
-    
-    // Для 4x4: inversions + расстояние пустой клетки от низа
     const blankFromBottom = 3 - blankRow;
     return (inversions + blankFromBottom) % 2 === 0;
 }
 
-        function isSolvable(tiles) {
-            let inversions = 0;
-            for (let i = 0; i < tiles.length; i++) {
-                for (let j = i + 1; j < tiles.length; j++) {
-                    if (tiles[i] && tiles[j] && tiles[i] > tiles[j]) inversions++;
-                }
-            }
-            return inversions % 2 === 0;
-        }
+function showSkipButton() {
+    const skipBtn = document.createElement('button');
+    skipBtn.textContent = "ПРОПУСТИТЬ ПЯТНАШКИ";
+    skipBtn.className = "mt-4 w-full py-6 border-4 border-[#ff00aa] text-[#ff00aa] text-xl hover:bg-[#ff00aa] hover:text-black transition-colors";
+    skipBtn.onclick = () => {
+        playSound("success");
+        alert("Пятнашки пропущены!");
+        nextStep();
+    };
+    document.getElementById('step2').appendChild(skipBtn);
+}
 
-        function renderPuzzle() {
-            const container = document.getElementById('puzzle');
-            container.innerHTML = '';
-            puzzleTiles.forEach((tile, index) => {
-                const div = document.createElement('div');
-                div.className = `tile flex items-center justify-center text-4xl ${tile ? 'bg-[#111]' : 'bg-[#222]'}`;
-                div.textContent = tile || '';
-                div.onclick = () => moveTile(index);
-                container.appendChild(div);
-            });
-        }
+function renderPuzzle() {
+    const container = document.getElementById('puzzle');
+    container.innerHTML = '';
+    puzzleTiles.forEach((tile, index) => {
+        const div = document.createElement('div');
+        div.className = `tile flex items-center justify-center text-4xl ${tile ? 'bg-[#111]' : 'bg-[#222]'}`;
+        div.textContent = tile || '';
+        div.onclick = () => moveTile(index);
+        container.appendChild(div);
+    });
+}
 
-        function moveTile(index) {
-            playSound("click");
-            const emptyIndex = puzzleTiles.indexOf(0);
-            const validMoves = [emptyIndex-1, emptyIndex+1, emptyIndex-4, emptyIndex+4];
-            
-            if (validMoves.includes(index)) {
-                [puzzleTiles[index], puzzleTiles[emptyIndex]] = [puzzleTiles[emptyIndex], puzzleTiles[index]];
-                renderPuzzle();
-                
-                if (JSON.stringify(puzzleTiles) === JSON.stringify(solvedState)) {
-                    puzzleSolved = true;
-                    playSound("success");
-                    setTimeout(() => {
-                        alert("ПЯТНАШКИ ПРОЙДЕНЫ! КОД РАЗБЛОКИРОВАН.");
-                        nextStep();
-                    }, 600);
-                }
-            }
-        }
-
-        function resetPuzzle() {
-            initPuzzle();
-        }
-
-        // ==================== PASSWORD STEPS ====================
-        function checkPassword(step, correct) {
-            playSound("click");
-            const input = document.getElementById(`pass${step}`);
-            if (input.value.trim().toUpperCase() === correct) {
-                playSound("success");
-                speak("Поздравляю, агент!");
+function moveTile(index) {
+    playSound("click");
+    const emptyIndex = puzzleTiles.indexOf(0);
+    const validMoves = [emptyIndex-1, emptyIndex+1, emptyIndex-4, emptyIndex+4];
+    
+    if (validMoves.includes(index)) {
+        [puzzleTiles[index], puzzleTiles[emptyIndex]] = [puzzleTiles[emptyIndex], puzzleTiles[index]];
+        renderPuzzle();
+        
+        if (JSON.stringify(puzzleTiles) === JSON.stringify(solvedState)) {
+            playSound("success");
+            setTimeout(() => {
+                alert("ПЯТНАШКИ ПРОЙДЕНЫ! ОТЛИЧНАЯ РАБОТА!");
                 nextStep();
-            } else {
-                playSound("error");
-                input.style.borderColor = '#ff00aa';
-                setTimeout(() => input.style.borderColor = '#39ff14', 700);
-            }
+            }, 600);
         }
+    }
+}
 
+function resetPuzzle() {
+    if (puzzleTimer) clearInterval(puzzleTimer);
+    initPuzzle();
+}
         // ==================== STEP 5: ARKANOID ====================
         let arkanoidCanvas, aCtx, paddle, ball, blocks, score, lives, extraBalls;
         
