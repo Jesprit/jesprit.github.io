@@ -163,7 +163,7 @@ OGT OGT OGT</p>
         <!-- STEP 4 -->
         <div id="step4" class="step hidden terminal p-8 rounded-2xl">
             <h2 class="text-2xl mb-8 text-center">СКВОРЕЧНИК</h2>
-            <p class="mb-6 text-center">О да! Мой юнный друг, теперь вам надо пройти до конца дороги. Там у тупик, перед спуском будет железная заброшка на на ношках</p>
+            <p class="mb-6 text-center">О да! Мой юнный друг, теперь надо пройти до конца дороги. Там у тупика, перед спуском будет железная заброшка на на ношках</p>
             <input id="pass4" class="w-full bg-black border-4 border-[#39ff14] p-6 text-3xl text-center" 
                    placeholder="••••••" maxlength="10">
             <button onclick="checkPassword(4, 'КЕДР')" 
@@ -424,24 +424,46 @@ OGT OGT OGT</p>
             alert("Подсказка: " + r.a[0] + " _ _ _");
         }
 
-        // ==================== STEP 2: 15 PUZZLE ====================
-        let puzzleTiles = [];
-        const solvedState = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0];
+// ==================== STEP 2: 15-PUZZLE (ИСПРАВЛЕНО) ====================
+let puzzleTiles = [];
+const solvedState = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0];
 
-        function initPuzzle() {
-            puzzleTiles = [...solvedState];
-            shufflePuzzle();
-            renderPuzzle();
+function initPuzzle() {
+    puzzleTiles = [...solvedState];
+    shufflePuzzle();
+    renderPuzzle();
+}
+
+function shufflePuzzle() {
+    do {
+        for (let i = puzzleTiles.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [puzzleTiles[i], puzzleTiles[j]] = [puzzleTiles[j], puzzleTiles[i]];
         }
+    } while (!isSolvable(puzzleTiles));
+}
 
-        function shufflePuzzle() {
-            for (let i = puzzleTiles.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [puzzleTiles[i], puzzleTiles[j]] = [puzzleTiles[j], puzzleTiles[i]];
+// Правильная проверка решаемости для 4x4
+function isSolvable(tiles) {
+    let inversions = 0;
+    let blankRow = 0;
+    
+    for (let i = 0; i < tiles.length; i++) {
+        if (tiles[i] === 0) {
+            blankRow = Math.floor(i / 4);
+            continue;
+        }
+        for (let j = i + 1; j < tiles.length; j++) {
+            if (tiles[j] !== 0 && tiles[i] > tiles[j]) {
+                inversions++;
             }
-            // Ensure solvable
-            if (!isSolvable(puzzleTiles)) shufflePuzzle();
         }
+    }
+    
+    // Для 4x4: inversions + расстояние пустой клетки от низа
+    const blankFromBottom = 3 - blankRow;
+    return (inversions + blankFromBottom) % 2 === 0;
+}
 
         function isSolvable(tiles) {
             let inversions = 0;
