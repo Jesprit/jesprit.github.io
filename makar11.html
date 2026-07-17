@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ШПИОНСКИЙ КВЕСТ: Макар 11</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+        :root {
+            --neon-green: #39ff14;
+            --neon-blue: #00f0ff;
+            --dark-bg: #0a0a0a;
+            --panel: #1a1a1a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Press Start 2P', system-ui;
+            background: var(--dark-bg);
+            color: var(--neon-green);
+            overflow-x: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            touch-action: manipulation;
+        }
+        
+        header {
+            background: linear-gradient(180deg, #000, #111);
+            padding: 15px;
+            text-align: center;
+            border-bottom: 3px solid var(--neon-blue);
+            box-shadow: 0 0 20px var(--neon-blue);
+            position: relative;
+        }
+        
+        .title {
+            font-size: 1.4rem;
+            text-shadow: 0 0 10px var(--neon-green);
+            letter-spacing: 4px;
+        }
+        
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent, rgba(57, 255, 20, 0.1), transparent);
+            animation: scan 4s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(300%); }
+        }
+        
+        .main {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        button {
+            font-family: 'Press Start 2P', system-ui;
+            background: #111;
+            color: var(--neon-green);
+            border: 3px solid var(--neon-blue);
+            padding: 15px 25px;
+            margin: 10px auto;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 0 15px var(--neon-blue);
+            min-height: 60px;
+            width: calc(100% - 20px);
+            display: block;
+        }
+        
+        button:active {
+            background: var(--neon-green);
+            color: #000;
+            transform: scale(0.95);
+        }
+        
+        .neon-text {
+            text-shadow: 
+                0 0 5px var(--neon-green),
+                0 0 10px var(--neon-green),
+                0 0 20px var(--neon-blue);
+        }
+        
+        .panel {
+            background: var(--panel);
+            border: 2px solid var(--neon-blue);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+        
+        input {
+            background: #000;
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 15px;
+            font-family: 'Press Start 2P', system-ui;
+            width: 100%;
+            font-size: 1.1rem;
+            margin: 10px 0;
+        }
+        
+        .step {
+            display: none;
+        }
+        
+        .step.active {
+            display: block;
+        }
+        
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            max-width: 320px;
+            margin: 20px auto;
+            background: #000;
+            padding: 8px;
+            border: 4px solid var(--neon-blue);
+        }
+        
+        .tile {
+            background: #222;
+            color: var(--neon-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            aspect-ratio: 1;
+            cursor: pointer;
+            border: 2px solid #444;
+            user-select: none;
+            box-shadow: inset 0 0 10px rgba(57,255,20,0.5);
+        }
+        
+        .tile.empty {
+            background: transparent;
+            box-shadow: none;
+            border: none;
+        }
+        
+        canvas {
+            display: block;
+            margin: 20px auto;
+            border: 4px solid var(--neon-blue);
+            image-rendering: pixelated;
+            max-width: 100%;
+            background: #000;
+        }
+        
+        .log {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            max-height: 200px;
+            overflow-y: auto;
+            background: #000;
+            padding: 10px;
+            border: 1px solid #333;
+        }
+        
+        .timer {
+            color: #ff0;
+            font-size: 1.2rem;
+            margin: 15px 0;
+        }
+        
+        .progress {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 5px 15px;
+            border: 2px solid var(--neon-green);
+            font-size: 0.8rem;
+            z-index: 100;
+        }
+        
+        .repeat-btn {
+            position: fixed;
+            top: 70px;
+            right: 15px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #111;
+            border: 3px solid var(--neon-blue);
+            font-size: 1.6rem;
+            z-index: 200;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="scanline"></div>
+        <h1 class="title neon-text">ШПИОНСКИЙ КАНАЛ</h1>
+        <p style="font-size:0.8rem; opacity:0.7;">ЗЕЛЕНЫЙ ОСТРОВ • ОМСК • 11 ЛЕТ МАКАРУ</p>
+    </header>
+
+    <button class="repeat-btn" onclick="repeatSpeak()">🔊</button>
+
+    <div id="intro" class="main active">
+        <div class="panel">
+            <h2 style="text-align:center; margin-bottom:20px;">АГЕНТ МАКАР</h2>
+            <p style="margin-bottom:20px; text-align:center;">Добро пожаловать в секретную операцию на косе парка "Зеленый остров"!</p>
+            <button onclick="startQuest()">АКТИВИРОВАТЬ ШПИОНСКИЙ КАНАЛ</button>
+        </div>
+    </div>
+
+    <!-- Step 1 -->
+    <div id="step1" class="main step">
+        <div class="panel">
+            <h2>ЗАГАДКИ ШПИОНА</h2>
+            <div id="riddle-container">
+                <div id="riddle-text" style="margin-bottom:20px; min-height:140px; font-size:1.05rem;"></div>
+                <div class="timer" id="riddle-timer">Время до подсказки: <span id="time-left">10:00</span></div>
+                <button onclick="showHint()">ПОЛУЧИТЬ ПОДСКАЗКУ</button>
+                <input type="text" id="riddle-answer" placeholder="ВВЕДИ ОТВЕТ" style="margin-top:10px;" onkeypress="if(event.key==='Enter') checkRiddle()">
+                <button onclick="checkRiddle()">ПРОВЕРИТЬ</button>
+            </div>
+            <div id="riddle-complete" style="display:none; text-align:center; padding:15px; background:rgba(57,255,20,0.1);">
+                <p>✅ ЗАГАДКА РЕШЕНА!</p>
+                <button onclick="nextRiddle()">СЛЕДУЮЩАЯ ЗАГАДКА</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 2: 15-puzzle -->
+    <div id="step2" class="main step">
+        <div class="panel">
+            <h2>ПЯТНАШКИ: РАЗЛОЖИ КОД</h2>
+            <div id="puzzle-grid" class="puzzle-grid"></div>
+            <button onclick="shufflePuzzle()">ПЕРЕМЕШАТЬ</button>
+            <button onclick="checkPuzzleWin()">ГОТОВО!</button>
+        </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div id="step3" class="main step">
+        <div class="panel">
+            <h2>ЗАБРОШКА OGT</h2>
+            <p>ВВЕДИ КОД С КОМПАСА</p>
+            <input type="text" id="code3" placeholder="КОМПАС" onkeypress="if(event.key==='Enter') checkCode(3)">
+            <button onclick="checkCode(3)">ПОДТВЕРДИТЬ</button>
+        </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div id="step4" class="main step">
+        <div class="panel">
+            <h2>СБОРКА СКВОРЕЧНИКА</h2>
+            <p>КОД С ДНА</p>
+            <input type="text" id="code4" placeholder="КЕДР" onkeypress="if(event.key==='Enter') checkCode(4)">
+            <button onclick="checkCode(4)">ПОДТВЕРДИТЬ</button>
+        </div>
+    </div>
+
+    <!-- Step 5: Arkanoid -->
+    <div id="step5" class="main step">
+        <div class="panel">
+            <h2>АРКАНОИД: С ДР МАКАР</h2>
+            <canvas id="arkanoid" width="320" height="420"></canvas>
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <button onclick="movePaddle(-30)" style="flex:1;">◀</button>
+                <button onclick="movePaddle(30)" style="flex:1;">▶</button>
+            </div>
+            <button onclick="resetArkanoid()">РЕСТАРТ</button>
+        </div>
+    </div>
+
+    <!-- Step 6 -->
+    <div id="step6" class="main step">
+        <div class="panel">
+            <h2>КОРНЕВЫЕ ПНИ</h2>
+            <p>ВВЕДИ КОД</p>
+            <input type="text" id="code6" placeholder="MAYDAY" onkeypress="if(event.key==='Enter') checkCode(6)">
+            <button onclick="checkCode(6)">ПОДТВЕРДИТЬ</button>
+        </div>
+    </div>
+
+    <!-- Step 7 -->
+    <div id="step7" class="main step">
+        <div class="panel">
+            <h2>СТРОИМ ПЛОТ</h2>
+            <div id="hint7" style="display:none; margin:15px 0; padding:15px; background:#330000; border:2px solid #f00;">
+                Подсказка: Спроси папу, что он пишет, когда завершает задачи на работе.
+            </div>
+            <button onclick="showHint7()">ПОЛУЧИТЬ ПОДСКАЗКУ (через 2 часа)</button>
+            <input type="text" id="code7" placeholder="ГОТОВО" style="margin-top:15px;" onkeypress="if(event.key==='Enter') checkCode(7)">
+            <button onclick="checkCode(7)">ПОДТВЕРДИТЬ</button>
+        </div>
+    </div>
+
+    <!-- Step 8: Snake -->
+    <div id="step8" class="main step">
+        <div class="panel">
+            <h2>ЗМЕЙКА: СОБЕРИ 11</h2>
+            <canvas id="snake" width="330" height="330"></canvas>
+            <div style="text-align:center;margin-top:15px;">
+                <button onclick="startSnake()">НАЧАТЬ / РЕСТАРТ</button>
+            </div>
+            <p style="font-size:0.8rem; text-align:center; margin-top:10px;">← → ↑ ↓</p>
+        </div>
+    </div>
+
+    <!-- Finale -->
+    <div id="step9" class="main step">
+        <div class="panel" style="text-align:center;">
+            <h2 class="neon-text" style="font-size:2.2rem; line-height:1.3; margin:40px 0 20px;">С ДНЁМ РОЖДЕНИЯ,<br>МАКАР!</h2>
+            <p style="font-size:1.3rem; margin:30px 0;">Тебе 11 лет! Ты — лучший шпион на Зеленом острове.</p>
+            <p style="margin:25px 0;">Клад спрятан в палатке у костра.</p>
+            <button onclick="launchFireworks()" style="background:#ff0;color:#000;font-size:1.5rem;">ЗАПУСТИТЬ САЛЮТ 🎆</button>
+            <div id="fireworks" style="font-size:3rem; margin-top:30px; min-height:100px;"></div>
+        </div>
+    </div>
+
+    <div class="progress">
+        ШАГ <span id="current-step">1</span>/9
+    </div>
+
+    <script>
+        // === CORE ===
+        let currentStep = 1;
+        let riddlesSolved = 0;
+        let currentRiddleIndex = 0;
+        
+        const riddles = [
+            {q: "Что имеет шею, но нет головы?", a: "БУТЫЛКА", hint: "Пьёшь из неё"},
+            {q: "Какой месяц имеет 28 дней?", a: "ВСЕ", hint: "Любой"},
+            {q: "Что можно увидеть с закрытыми глазами?", a: "СОН", hint: "Ночью"},
+            {q: "Какой рукой лучше размешивать чай?", a: "ЛОЖКОЙ", hint: "Не рукой"},
+            {q: "Что становится мокрым, когда сушит?", a: "ПОЛОТЕНЦЕ", hint: "В ванной"},
+            {q: "Что висит на стене и плачет?", a: "БАРАН", hint: "Не картина"},
+            {q: "Какое колесо не едет по дороге?", a: "ЗАПАСНОЕ", hint: "В багажнике"},
+            {q: "Что идёт, но не ходит?", a: "ДОЖДЬ", hint: "С неба"},
+            {q: "Что можно разбить, не трогая?", a: "МОЛЧАНИЕ", hint: "Разговор"},
+            {q: "Что имеет зубы, но не ест?", a: "РАСЧЁСКА", hint: "Для волос"},
+            {q: "Что имеет корни, но не растёт?", a: "ЗУБ", hint: "Во рту"}
+        ];
+        
+        let audioCtx;
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        
+        function playClick() {
+            initAudio();
+            const o = audioCtx.createOscillator(); o.type='sawtooth'; o.frequency.value=900;
+            const g = audioCtx.createGain(); g.gain.value=0.08;
+            o.connect(g).connect(audioCtx.destination); o.start(); setTimeout(()=>o.stop(),35);
+        }
+        
+        function playSuccess() {
+            initAudio();
+            let f=520; for(let i=0;i<7;i++){setTimeout(()=>{const o=audioCtx.createOscillator();o.type='sine';o.frequency.value=f;const g=audioCtx.createGain();g.gain.value=0.25;o.connect(g).connect(audioCtx.destination);o.start();setTimeout(()=>o.stop(),110);},i*70);f+=110;}
+        }
+        
+        function playError() {
+            initAudio();
+            const o = audioCtx.createOscillator(); o.type='sawtooth'; o.frequency.value=140;
+            const g = audioCtx.createGain(); g.gain.value=0.4;
+            o.connect(g).connect(audioCtx.destination); o.start();
+            setTimeout(()=>{o.frequency.setValueAtTime(90,audioCtx.currentTime+0.4);},200);
+            setTimeout(()=>o.stop(),900);
+        }
+        
+        // Background geiger
+        function startGeiger() {
+            initAudio();
+            setInterval(()=>{
+                if(Math.random()>0.65){
+                    const o = audioCtx.createOscillator();
+                    o.type = 'square';
+                    o.frequency.value = 1800 + Math.random()*6000;
+                    const g = audioCtx.createGain(); g.gain.value = 0.04;
+                    o.connect(g).connect(audioCtx.destination);
+                    o.start();
+                    setTimeout(()=>o.stop(), 8 + Math.random()*55);
+                }
+            },180);
+        }
+        
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const u = new SpeechSynthesisUtterance(text);
+                u.lang = 'ru-RU';
+                u.rate = 0.92;
+                speechSynthesis.speak(u);
+            }
+        }
+        
+        function repeatSpeak() {
+            const texts = {
+                1: document.getElementById('riddle-text') ? document.getElementById('riddle-text').innerText : '',
+                3: 'Введи код КОМПАС',
+                4: 'Введи код КЕДР',
+                6: 'Введи код MAYDAY',
+                7: 'Введи код ГОТОВО',
+                9: 'С днем рождения Макар! Клад в палатке.'
+            };
+            if (texts[currentStep]) speak(texts[currentStep]);
+        }
+        
+        // Progress
+        function loadProgress() {
+            const saved = localStorage.getItem('makarQuest11');
+            if (saved) {
+                const d = JSON.parse(saved);
+                currentStep = d.step || 1;
+                currentRiddleIndex = d.riddleIdx || 0;
+                riddlesSolved = d.solved || 0;
+            }
+        }
+        
+        function saveProgress() {
+            localStorage.setItem('makarQuest11', JSON.stringify({
+                step: currentStep,
+                riddleIdx: currentRiddleIndex,
+                solved: riddlesSolved
+            }));
+        }
+        
+        function goToStep(n) {
+            currentStep = n;
+            document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+            const el = document.getElementById('step'+n);
+            if (el) el.classList.add('active');
+            document.getElementById('current-step').textContent = n;
+            saveProgress();
+        }
+        
+        function startQuest() {
+            playClick();
+            initAudio();
+            startGeiger();
+            speak('Агент Макар. Операция активирована.');
+            document.getElementById('intro').classList.remove('active');
+            goToStep(1);
+            startRiddle();
+        }
+        
+        // Step 1
+        let riddleTimerInterval;
+        function startRiddle() {
+            if (currentRiddleIndex >= riddles.length) {
+                goToStep(2);
+                return;
+            }
+            const r = riddles[currentRiddleIndex];
+            document.getElementById('riddle-text').innerHTML = `<strong>${currentRiddleIndex+1}/11</strong><br>${r.q}`;
+            document.getElementById('riddle-complete').style.display = 'none';
+            document.getElementById('riddle-answer').value = '';
+            speak(r.q);
+            
+            let t = 600;
+            clearInterval(riddleTimerInterval);
+            riddleTimerInterval = setInterval(()=>{
+                t--;
+                const m = Math.floor(t/60);
+                const s = t%60;
+                document.getElementById('time-left').textContent = `${m}:${s<10?'0':''}${s}`;
+            },1000);
+        }
+        
+        function showHint() {
+            playClick();
+            const h = riddles[currentRiddleIndex].hint;
+            alert('ПОДСКАЗКА: ' + h);
+            speak(h);
+        }
+        
+        function checkRiddle() {
+            playClick();
+            const ans = document.getElementById('riddle-answer').value.trim().toUpperCase().replace(/\s/g,'');
+            const correct = riddles[currentRiddleIndex].a.replace(/\s/g,'');
+            if (ans === correct) {
+                playSuccess();
+                speak('Правильно!');
+                document.getElementById('riddle-complete').style.display = 'block';
+                riddlesSolved++;
+            } else {
+                playError();
+                speak('Неверно.');
+            }
+        }
+        
+        function nextRiddle() {
+            currentRiddleIndex++;
+            saveProgress();
+            startRiddle();
+        }
+        
+        // Step 2 15-puzzle
+        let puzzle = [];
+        const solved = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0];
+        
+        function initPuzzle() {
+            puzzle = [...solved];
+            shufflePuzzle(true);
+        }
+        
+        function renderPuzzle() {
+            const g = document.getElementById('puzzle-grid');
+            g.innerHTML = '';
+            puzzle.forEach((n,i)=>{
+                const t = document.createElement('div');
+                t.className = 'tile';
+                if (n===0) t.classList.add('empty');
+                else t.textContent = n;
+                t.onclick = () => moveTile(i);
+                g.appendChild(t);
+            });
+        }
+        
+        function moveTile(i) {
+            playClick();
+            const empty = puzzle.indexOf(0);
+            if (Math.abs(i-empty)===1 || Math.abs(i-empty)===4) {
+                [puzzle[i], puzzle[empty]] = [puzzle[empty], puzzle[i]];
+                renderPuzzle();
+            }
+        }
+        
+        function shufflePuzzle(first=false) {
+            do {
+                for (let i = puzzle.length-1; i>0; i--) {
+                    const j = Math.floor(Math.random()*(i+1));
+                    [puzzle[i], puzzle[j]] = [puzzle[j], puzzle[i]];
+                }
+            } while (!isSolvable());
+            if (!first) renderPuzzle();
+        }
+        
+        function isSolvable() {
+            let inv = 0;
+            for (let i=0; i<16; i++) {
+                if (puzzle[i]===0) continue;
+                for (let j=i+1; j<16; j++) {
+                    if (puzzle[j] && puzzle[j] < puzzle[i]) inv++;
+                }
+            }
+            return inv % 2 === 0;
+        }
+        
+        function checkPuzzleWin() {
+            if (JSON.stringify(puzzle) === JSON.stringify(solved)) {
+                playSuccess();
+                speak('Пятнашки решены!');
+                goToStep(3);
+            } else {
+                playError();
+            }
+        }
+        
+        // Code inputs
+        function checkCode(n) {
+            playClick();
+            let val = '', target = '';
+            if (n===3) { val = document.getElementById('code3').value; target='КОМПАС'; }
+            else if (n===4) { val = document.getElementById('code4').value; target='КЕДР'; }
+            else if (n===6) { val = document.getElementById('code6').value; target='MAYDAY'; }
+            else if (n===7) { val = document.getElementById('code7').value; target='ГОТОВО'; }
+            
+            if (val.trim().toUpperCase().replace(/\s/g,'') === target) {
+                playSuccess();
+                speak('Код верный. Доступ разрешён.');
+                goToStep(n+1);
+            } else {
+                playError();
+                speak('Неверный код.');
+            }
+        }
+        
+        function showHint7() {
+            playClick();
+            document.getElementById('hint7').style.display = 'block';
+            speak('Спроси папу, что он пишет, когда завершает задачи.');
+        }
+        
+        // Arkanoid
+        let arkCtx, paddleX = 120, ballX=160, ballY=300, ballDX=3.5, ballDY=-3.8;
+        let bricks = [];
+        
+        function initArkanoid() {
+            const c = document.getElementById('arkanoid');
+            arkCtx = c.getContext('2d');
+            resetArkanoid();
+            setInterval(arkanoidLoop, 1000/55);
+        }
+        
+        function resetArkanoid() {
+            paddleX = 120;
+            ballX = 160; ballY = 300; ballDX = 3.5; ballDY = -3.8;
+            bricks = [];
+            const letters = "СДРМАКАР";
+            for (let i = 0; i < 28; i++) {
+                bricks.push({
+                    x: 18 + (i%8)*34,
+                    y: 55 + Math.floor(i/8)*26,
+                    w: 28,
+                    h: 18,
+                    active: true
+                });
+            }
+        }
+        
+        function arkanoidLoop() {
+            const c = document.getElementById('arkanoid');
+            arkCtx.clearRect(0,0,320,420);
+            
+            // paddle
+            arkCtx.fillStyle = '#0ff';
+            arkCtx.fillRect(paddleX, 380, 82, 14);
+            
+            // ball
+            arkCtx.fillStyle = '#ff0';
+            arkCtx.beginPath();
+            arkCtx.arc(ballX, ballY, 9, 0, Math.PI*2);
+            arkCtx.fill();
+            
+            // bricks
+            let alive = 0;
+            bricks.forEach(b=>{
+                if (!b.active) return;
+                alive++;
+                arkCtx.fillStyle = '#0f0';
+                arkCtx.fillRect(b.x, b.y, b.w, b.h);
+            });
+            
+            // movement
+            ballX += ballDX;
+            ballY += ballDY;
+            
+            if (ballX < 10 || ballX > 310) ballDX *= -1;
+            if (ballY < 10) ballDY *= -1;
+            
+            // paddle hit
+            if (ballY > 375 && ballY < 390 && ballX > paddleX-5 && ballX < paddleX+87) {
+                ballDY *= -1.02;
+                playClick();
+            }
+            
+            // brick hit
+            for (let i=0; i<bricks.length; i++) {
+                const b = bricks[i];
+                if (!b.active) continue;
+                if (ballX > b.x && ballX < b.x+b.w && ballY > b.y && ballY < b.y+b.h) {
+                    b.active = false;
+                    ballDY *= -1;
+                    playSuccess();
+                    break;
+                }
+            }
+            
+            if (ballY > 430) {
+                resetArkanoid();
+            }
+            
+            if (alive === 0) {
+                playSuccess();
+                speak('Победа! С ДР Макар!');
+                goToStep(6);
+            }
+        }
+        
+        function movePaddle(d) {
+            paddleX += d;
+            if (paddleX < 0) paddleX = 0;
+            if (paddleX > 238) paddleX = 238;
+        }
+        
+        // Snake
+        let snake = [], snakeDirX=1, snakeDirY=0, snakeFood={}, snakeScore=0, snakeCtx, snakeLoop;
+        
+        function initSnake() {
+            const c = document.getElementById('snake');
+            snakeCtx = c.getContext('2d');
+        }
+        
+        function startSnake() {
+            clearInterval(snakeLoop);
+            snake = [{x:5,y:5}];
+            snakeDirX=1; snakeDirY=0;
+            snakeScore = 0;
+            snakeFood = {x: Math.floor(Math.random()*11), y: Math.floor(Math.random()*11)};
+            snakeLoop = setInterval(snakeTick, 110);
+        }
+        
+        function snakeTick() {
+            const head = {x: snake[0].x + snakeDirX, y: snake[0].y + snakeDirY};
+            
+            if (head.x<0 || head.x>10 || head.y<0 || head.y>10 || snake.some(s=>s.x===head.x && s.y===head.y)) {
+                clearInterval(snakeLoop);
+                playError();
+                return;
+            }
+            
+            snake.unshift(head);
+            
+            if (head.x === snakeFood.x && head.y === snakeFood.y) {
+                snakeScore++;
+                playClick();
+                snakeFood = {x: Math.floor(Math.random()*11), y: Math.floor(Math.random()*11)};
+                if (snake.length >= 11) {
+                    clearInterval(snakeLoop);
+                    playSuccess();
+                    goToStep(9);
+                }
+            } else {
+                snake.pop();
+            }
+            drawSnake();
+        }
+        
+        function drawSnake() {
+            snakeCtx.fillStyle = '#000';
+            snakeCtx.fillRect(0,0,330,330);
+            
+            snakeCtx.strokeStyle = '#222';
+            for (let i=0; i<=11; i++) {
+                snakeCtx.beginPath();
+                snakeCtx.moveTo(i*30,0);
+                snakeCtx.lineTo(i*30,330);
+                snakeCtx.stroke();
+                snakeCtx.beginPath();
+                snakeCtx.moveTo(0,i*30);
+                snakeCtx.lineTo(330,i*30);
+                snakeCtx.stroke();
+            }
+            
+            snakeCtx.fillStyle = '#0f0';
+            snake.forEach(s => snakeCtx.fillRect(s.x*30+3, s.y*30+3, 24, 24));
+            
+            snakeCtx.fillStyle = '#f00';
+            snakeCtx.fillRect(snakeFood.x*30+7, snakeFood.y*30+7, 16, 16);
+        }
+        
+        document.addEventListener('keydown', e => {
+            if (currentStep !== 8) return;
+            if (e.key === 'ArrowLeft' && snakeDirX !== 1) {snakeDirX=-1;snakeDirY=0;}
+            if (e.key === 'ArrowRight' && snakeDirX !== -1) {snakeDirX=1;snakeDirY=0;}
+            if (e.key === 'ArrowUp' && snakeDirY !== 1) {snakeDirX=0;snakeDirY=-1;}
+            if (e.key === 'ArrowDown' && snakeDirY !== -1) {snakeDirX=0;snakeDirY=1;}
+        });
+        
+        function launchFireworks() {
+            const f = document.getElementById('fireworks');
+            f.textContent = '🎉🎆🧨✨🎇';
+            speak('С одиннадцатилетием, Макар! Ты супер!');
+            setTimeout(()=>{f.textContent += ' 💥 ';}, 600);
+        }
+        
+        // Init everything
+        function initAll() {
+            loadProgress();
+            document.getElementById('current-step').textContent = currentStep;
+            
+            // Show correct step
+            document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+            const activeStep = document.getElementById('step' + currentStep);
+            if (activeStep) activeStep.classList.add('active');
+            
+            initPuzzle();
+            renderPuzzle();
+            initArkanoid();
+            initSnake();
+            
+            // Touch init for audio
+            document.body.addEventListener('touchstart', ()=>{initAudio();}, {once:true});
+        }
+        
+        window.onload = initAll;
+    </script>
+</body>
+</html>
